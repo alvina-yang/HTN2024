@@ -196,10 +196,10 @@ export default function CodeEditorPage() {
           {!loading && !error && question && (
             <>
               <h1 className="text-2xl text-gray-200 font-bold mb-4 break-words">
-                {question.title} {/* Title from the API response */}
+                {question.title} 
               </h1>
               <pre className="bg-zinc-800 text-gray-300 p-4 rounded break-words whitespace-pre-wrap">
-                {question.text} {/* Example text from the API response */}
+                {question.text} 
               </pre>
             </>
           )}
