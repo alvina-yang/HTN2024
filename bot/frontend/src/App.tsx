@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useDaily } from "@daily-co/daily-react";
 import { ArrowRight, Ear, Loader2 } from "lucide-react";
 
@@ -69,11 +69,13 @@ export default function App() {
   );
   const [mode, setMode] = useState<string | null>(null);
   const [title, setTitle] = useState<string | null>(null);
+  const [analysisData, setAnalysisData] = useState<string | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setMode(params.get('mode'));
-    setTitle(params.get('title'));
+    setMode(params.get("mode"));
+    setTitle(params.get("title"));
+    setAnalysisData(params.get("text"));
   }, []);
 
   function handleRoomUrl() {
@@ -110,7 +112,8 @@ export default function App() {
           config.room_url,
           config.token,
           serverUrl,
-          mode
+          mode,
+          analysisData // Pass the analysis data to the agent
         );
 
         if (data.error) {
@@ -169,71 +172,86 @@ export default function App() {
   }
 
   return (
-    <div className="h-screen w-screen bg-black text-white flex items-center justify-center p-0 m-0">
-    <BackgroundBeams />
-    <Card
-      shadow
-      className="animate-appear max-w-lg bg-zinc-900 text-white dark:bg-zinc-900 dark:text-white"
-    >
-      <CardHeader>
-        <CardTitle>Configure your audio devices.</CardTitle>
-        <CardDescription>
-          Check before meeting with our AI bot for the best experience.
-        </CardDescription>
-      </CardHeader>
-      <CardContent stack>
-        {mode === "behavior" && (
-          <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-md mb-4">
-            <p className="font-semibold">Mode: Behaviour interview</p>
-            <p>Resume uploaded</p>
-          </div>
-        )}
-        {mode === "technical" && (
-          <div className="bg-green-100 dark:bg-green-900 p-2 rounded-md mb-4">
-            <p className="font-semibold">Mode: Technical interview</p>
-            {title && <p>Question: {title}</p>}
-          </div>
-        )}
-        {state !== "idle" && (
-          <>
-            <div className="flex flex-row gap-2 bg-primary-50 dark:bg-zinc-700 px-4 py-2 md:p-2 text-sm items-center justify-center rounded-md font-medium text-pretty">
-              <Ear className="size-7 md:size-5 text-primary-400" />
-              Works best in a quiet environment with a good internet.
+    <div className="h-screen w-screen bg-black text-white flex items-center justify-center">
+      <BackgroundBeams />
+      <Card
+        shadow
+        className="animate-appear max-w-lg bg-zinc-900 text-white dark:bg-zinc-900 dark:text-white"
+      >
+        <CardHeader>
+          <CardTitle>Configure your audio devices.</CardTitle>
+          <CardDescription>
+            Check before meeting with our AI bot for the best experience.
+          </CardDescription>
+        </CardHeader>
+        <CardContent stack>
+          {mode === "behavior" && (
+            <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-lg shadow-md mb-6">
+              <p className="font-semibold text-lg text-blue-800 dark:text-blue-200 mb-3">
+                Mode: Behaviour Interview
+              </p>
+              {analysisData ? (
+                <div className="flex items-center bg-green-100 dark:bg-green-900 p-3 rounded-md">
+                  <p className="text-green-600 dark:text-green-400 font-medium text-justify" >
+                    Your resume has been successfully processed.
+                  </p>
+                </div>
+              ) : (
+                <div className="bg-red-100 dark:bg-red-900 p-3 rounded-md">
+                  <p className="text-red-600 dark:text-red-400 font-medium">
+                    Your resume is not loaded. Please try again.
+                  </p>
+                </div>
+              )}
             </div>
-            <Configure
-              startAudioOff={startAudioOff}
-              handleStartAudioOff={() => setStartAudioOff(!startAudioOff)}
-            />
-          </>
-        )}
-      </CardContent>
-      <CardFooter>
-        {state === "idle" ? (
-          <Button
-            id="nextBtn"
-            fullWidthMobile
-            key="next"
-            disabled={
-              !!((roomQs && !roomError) || (autoRoomCreation && !serverUrl))
-            }
-            onClick={() => handleRoomUrl()}
-          >
-            Next <ArrowRight />
-          </Button>
-        ) : (
-          <Button
-            key="Start"
-            className="bg-zinc-800"
-            fullWidthMobile
-            onClick={() => start()}
-            disabled={state !== "configuring"}
-          >
-            {state !== "configuring" && <Loader2 className="animate-spin" />}
-            {status_text[state as keyof typeof status_text]}
-          </Button>
-        )}
-      </CardFooter>
-    </Card>
+          )}
+
+          {mode === "technical" && (
+            <div className="bg-green-100 dark:bg-green-900 p-2 rounded-md mb-4">
+              <p className="font-semibold">Mode: Technical interview</p>
+              {title && <p>Question: {title}</p>}
+            </div>
+          )}
+          {state !== "idle" && (
+            <>
+              <div className="flex flex-row gap-2 bg-primary-50 dark:bg-zinc-700 px-4 py-2 md:p-2 text-sm items-center justify-center rounded-md font-medium text-pretty">
+                <Ear className="size-7 md:size-5 text-primary-400" />
+                Works best in a quiet environment with a good internet.
+              </div>
+              <Configure
+                startAudioOff={startAudioOff}
+                handleStartAudioOff={() => setStartAudioOff(!startAudioOff)}
+              />
+            </>
+          )}
+        </CardContent>
+        <CardFooter>
+          {state === "idle" ? (
+            <Button
+              id="nextBtn"
+              fullWidthMobile
+              key="next"
+              disabled={
+                !!((roomQs && !roomError) || (autoRoomCreation && !serverUrl))
+              }
+              onClick={() => handleRoomUrl()}
+            >
+              Next <ArrowRight />
+            </Button>
+          ) : (
+            <Button
+              key="Start"
+              className="bg-zinc-800"
+              fullWidthMobile
+              onClick={() => start()}
+              disabled={state !== "configuring"}
+            >
+              {state !== "configuring" && <Loader2 className="animate-spin" />}
+              {status_text[state as keyof typeof status_text]}
+            </Button>
+          )}
+        </CardFooter>
+      </Card>
     </div>
   );
 }
