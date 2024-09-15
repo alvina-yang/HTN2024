@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -8,6 +8,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button } from "../../components/ui/moving-border";
 import { SidebarDemo } from "../../components/sidebar";
+import { useRouter } from "next/navigation";
 
 // Custom theme for MUI components
 const theme = createTheme({
@@ -41,7 +42,15 @@ const theme = createTheme({
 export default function CodeEditorPage() {
   const [code, setCode] = useState(""); // Store the user's code
   const [language, setLanguage] = useState("javascript"); // Default language
+  const router = useRouter();
 
+  useEffect(() => {
+    // Check if the confirmation has been done
+    if (localStorage.getItem("codeInterviewConfirmed") !== "true") {
+      router.push("/code-interview/confirmation");
+    }
+  }, []);
+  
   // Example LeetCode-style question
   const question = {
     title: "Two Sum",

@@ -4,17 +4,16 @@ import { Sidebar, SidebarBody } from "../components/ui/sidebar";
 import {
   IconArrowLeft,
   IconBrandTabler,
-  IconSettings,
+  IconHome,
   IconUserBolt,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 export function SidebarDemo() {
   const links = [
     {
       label: "Code Interview",
-      href: "/code-interview", // Navigation to code interview
+      href: "/confirmation", // Navigation to code interview
       icon: (
         <IconBrandTabler className="text-slate-200 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -27,10 +26,10 @@ export function SidebarDemo() {
       ),
     },
     {
-      label: "Accounting Interview",
-      href: "/accounting-interview", // Navigation to accounting interview
+      label: "Home",
+      href: "/home", // Navigation to home
       icon: (
-        <IconSettings className="text-slate-200 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconHome className="text-slate-200 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
   ];

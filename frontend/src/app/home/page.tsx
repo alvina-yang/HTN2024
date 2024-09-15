@@ -15,7 +15,7 @@ export default function HomePage() {
   };
 
   const handleCodeClick = () => {
-    router.push("/code-interview");
+    router.push("/confirmation");
   };
 
   const handleAccountingClick = () => {
