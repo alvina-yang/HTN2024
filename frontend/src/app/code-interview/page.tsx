@@ -16,8 +16,8 @@ const theme = createTheme({
     MuiMenu: {
       styleOverrides: {
         paper: {
-          backgroundColor: "#292524", 
-          color: "white", 
+          backgroundColor: "#292524",
+          color: "white",
         },
       },
     },
@@ -44,53 +44,75 @@ export default function CodeEditorPage() {
   const [language, setLanguage] = useState("javascript"); // Default language
   const router = useRouter();
 
+  const [question, setQuestion] = useState<any>(null); // Store the fetched question
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
+  const [error, setError] = useState<string | null>(null); // Error state
+
+  // Fetch the question from the backend
   useEffect(() => {
-    // Check if the confirmation has been done
+    const fetchQuestion = async () => {
+      try {
+        const response = await fetch(
+          "https://f025-2620-101-f000-7c0-00-4a68.ngrok-free.app/api/find_lc_question",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ query: "dynamic programming" }), // Replace this with the actual query from the user input if needed
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch the question");
+        }
+
+        const data = await response.json();
+        setQuestion(data.content); // Set the fetched question content
+        setLoading(false); // Set loading to false after fetching
+      } catch (err) {
+        setLoading(false);
+        setError("Failed to fetch the question.");
+      }
+    };
+
+    fetchQuestion();
+  }, []);
+
+  // Check if the confirmation has been done
+  useEffect(() => {
     if (localStorage.getItem("codeInterviewConfirmed") !== "true") {
       router.push("/code-interview/confirmation");
     }
   }, []);
-  
-  // Example LeetCode-style question
-  const question = {
-    title: "Two Sum",
-    description:
-      "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to the target.",
-    example:
-      "Example: Input: nums = [2,7,11,15], target = 9 \nOutput: [0,1]",
-  };
+
   const [isSaving, setIsSaving] = useState(false); // To simulate API call status
+  const [changesEnabled, setChangesEnabled] = useState(true);
 
-  const [changesEnabled, setChangesEnabled] = useState(true); 
-
-  // Function to handle stopping changes on "Ask for Review" click
   const handleAskForReview = () => {
-    setChangesEnabled(false); // Disable further changes
+    setChangesEnabled(false);
     console.log("Changes disabled, code review requested.");
+    router.push('/statistics-code');
   };
 
-  // Simulate a backend function that sends code
   const sendCodeToBackend = (newCode: string) => {
     console.log("Sending code to the backend:", newCode);
-    // Simulate API delay
     setIsSaving(true);
     setTimeout(() => {
       setIsSaving(false);
-      // Here you would normally send `newCode` to your backend
     }, 500); // Simulating a delay
   };
 
- // Function to handle code changes and trigger backend interaction
   const handleEditorChange = (value: string | undefined) => {
     const newCode = value || "";
     setCode(newCode); // Update code in state
     if (changesEnabled) {
-      sendCodeToBackend(newCode); // Send changes to backend (or simulate it)
+      sendCodeToBackend(newCode);
     }
   };
-  // Function to handle language change
+
   const handleLanguageChange = (event: SelectChangeEvent) => {
-    setLanguage(event.target.value); // Update the language for the editor
+    setLanguage(event.target.value);
   };
 
   return (
@@ -111,14 +133,14 @@ export default function CodeEditorPage() {
                   onChange={handleLanguageChange}
                   label="Language"
                   sx={{
-                    color: 'white', // Make text white
-                    '.MuiSelect-icon': { color: 'white' }, // Make icon white
+                    color: 'white',
+                    '.MuiSelect-icon': { color: 'white' },
                     '.MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                       borderColor: 'white',
                     },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#3f3f46', // Zinc-600 hover color
+                      borderColor: '#3f3f46',
                     },
                   }}
                   MenuProps={{
@@ -142,10 +164,10 @@ export default function CodeEditorPage() {
               </FormControl>
             </div>
             <Button
-        borderRadius="1.85rem"
-        className="bg-zinc-700 dark:bg-slate-900 text-slate-200 dark:text-white dark:border-slate-800"
-        onClick={handleAskForReview}
-      >
+              borderRadius="1.85rem"
+              className="bg-zinc-700 dark:bg-slate-900 text-slate-200 dark:text-white dark:border-slate-800"
+              onClick={handleAskForReview}
+            >
               Ask for Review
             </Button>
           </div>
@@ -169,13 +191,18 @@ export default function CodeEditorPage() {
         </div>
 
         <div className="w-1/2 h-full bg-zinc-900 p-8 overflow-y-auto">
-          <h1 className="text-2xl text-gray-200 font-bold mb-4">
-            {question.title}
-          </h1>
-          <p className="text-gray-400 mb-4">{question.description}</p>
-          <pre className="bg-zinc-800 text-gray-300 p-4 rounded">
-            {question.example}
-          </pre>
+          {loading && <div className="text-white">Loading question...</div>}
+          {error && <div className="text-red-500">Error: {error}</div>}
+          {!loading && !error && question && (
+            <>
+              <h1 className="text-2xl text-gray-200 font-bold mb-4 break-words">
+                {question.title} 
+              </h1>
+              <pre className="bg-zinc-800 text-gray-300 p-4 rounded break-words whitespace-pre-wrap">
+                {question.text} 
+              </pre>
+            </>
+          )}
         </div>
       </div>
     </ThemeProvider>
