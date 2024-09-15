@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import {TextGenerateEffect} from "../../components/ui/text-generate-effect";
-import { FileUpload } from "../../components/ui/file_upload";
 import {PlaceholdersAndVanishInput } from "../../components/ui/placeholders-and-vanish-input";
 export default function ConfirmationPage() {
   const router = useRouter();
@@ -16,7 +15,7 @@ export default function ConfirmationPage() {
     // Store confirmation in localStorage
     localStorage.setItem("codeInterviewConfirmed", "true");
     // Navigate to the code interview page
-    router.push("/code-interview");
+    window.location.href = "http://localhost:5173/?mode=technical";
   };
 
   const [files, setFiles] = useState<File[]>([]);
