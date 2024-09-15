@@ -1,5 +1,6 @@
 from io import BytesIO
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 from langchain_cohere import ChatCohere, create_cohere_react_agent
@@ -9,12 +10,19 @@ from langchain.agents import AgentExecutor
 import json
 import re
 import pdfplumber
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
 
 # Load environment variables
 load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
+
+# Enable CORS for all routes
+CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
 # Set up Cohere Chat model
 cohere_api_key = os.getenv("COHERE_API_KEY")
@@ -120,27 +128,43 @@ def analyze_pdf(file_stream):
     return analysis_result
 
 # API endpoint to upload and analyze the PDF
-@app.route('/api/upload_pdf', methods=['POST'])
+@app.route('/api/upload_pdf', methods=['POST', 'OPTIONS'])
 def upload_pdf():
+    if request.method == 'OPTIONS':
+        # Respond to preflight request
+        response = app.make_default_options_response()
+        response.headers['Access-Control-Allow-Methods'] = 'POST'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response
+
+    app.logger.info("Received POST request for /api/upload_pdf")
+    app.logger.debug(f"Request headers: {request.headers}")
+    app.logger.debug(f"Request files: {request.files}")
+
     # Check if the post request has the file part
     if 'file' not in request.files:
+        app.logger.error("No file part in the request")
         return jsonify({"error": "No file part in the request"}), 400
 
     file = request.files['file']
 
     # If no file is selected
     if file.filename == '':
+        app.logger.error("No selected file")
         return jsonify({"error": "No selected file"}), 400
 
     # Check if the file has an allowed extension
     if file and allowed_file(file.filename):
+        app.logger.info(f"Processing file: {file.filename}")
         # Analyze the PDF file directly from memory without saving it
         file_stream = BytesIO(file.read())
         analysis = analyze_pdf(file_stream)
 
         # Return the analysis result
+        app.logger.info("File analysis complete")
         return jsonify(analysis), 200
     else:
+        app.logger.error(f"Invalid file type: {file.filename}")
         return jsonify({"error": "File type not allowed. Only PDF files are allowed."}), 400
 
 # Run the Flask app

@@ -27,8 +27,10 @@ const secondaryVariant = {
 
 export const FileUpload = ({
   onChange,
+  onAnalysisComplete,
 }: {
   onChange?: (files: File[]) => void;
+  onAnalysisComplete?: (result: string) => void;
 }) => {
   const [files, setFiles] = useState<File[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -48,8 +50,8 @@ export const FileUpload = ({
         const response = await fetch('http://localhost:5678/api/upload_pdf', {
           method: 'POST',
           body: formData,
-          mode: 'cors', // Explicitly set the mode to 'cors'
-          credentials: 'include', // Include credentials if your API requires authentication
+          mode: 'cors',
+          credentials: 'include',
         });
 
         if (!response.ok) {
@@ -61,9 +63,12 @@ export const FileUpload = ({
 
         const result = await response.json();
         setAnalysisResult(result.text);
+        onAnalysisComplete && onAnalysisComplete(result.text);
       } catch (error) {
         console.error('Error uploading file:', error);
-        setAnalysisResult(error instanceof Error ? error.message : 'Error analyzing file');
+        const errorMessage = error instanceof Error ? error.message : 'Error analyzing file';
+        setAnalysisResult(errorMessage);
+        onAnalysisComplete && onAnalysisComplete(errorMessage);
       } finally {
         setIsProcessing(false);
       }
@@ -229,7 +234,7 @@ const AnalysisResult = ({ result }: { result: string }) => (
       <IconCheck className="text-green-500 mr-2" />
       <h3 className="text-lg font-semibold text-green-500">Analyzed</h3>
     </div>
-    <p className="text-gray-700 dark:text-gray-300">{result}</p>
+    <p className="text-gray-700 dark:text-gray-300">Your interviewer is ready, please proceed.</p>
   </motion.div>
 );
 
