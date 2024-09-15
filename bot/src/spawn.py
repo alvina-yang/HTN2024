@@ -1,6 +1,7 @@
 import os
 import requests
 import time
+import logging
 
 FLY_API_HOST = os.getenv("FLY_API_HOST", "https://api.machines.dev/v1")
 FLY_APP_NAME = os.getenv("FLY_APP_NAME")
@@ -63,12 +64,19 @@ def spawn_fly_machine(room_url: str, token: str):
 def running_bot_locally(room_url: str, token: str):
     # Use the same image as the bot runner
 
+    logging.debug(f"Starting agent for room: {room_url}")
+    logging.debug(f"Token: {token}")
+
     # Machine configuration
-    cmd = f"python -m bot --room_url {room_url} --token {token}"
+    cmd = f"python src/bot.py --room_url {room_url} --token {token}"
     cmd = cmd.split()
 
     # Run the bot locally
-    os.system(" ".join(cmd))
+    try:
+        os.system(f"nohup {' '.join(cmd)} > bot.log 2>&1 &")
+    except Exception as e:
+        raise Exception(f"Problem starting a bot worker: {e}")
+
 
 
 
@@ -76,8 +84,7 @@ def running_bot_locally(room_url: str, token: str):
     vm_id = 0
 
 
-
-    raise Exception(f"Bot failed to enter started state after {MAX_RETRIES} retries")
+    return vm_id
 
 
 def get_machine_status(vm_id: str):

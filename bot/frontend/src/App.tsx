@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDaily } from "@daily-co/daily-react";
 import { ArrowRight, Ear, Loader2 } from "lucide-react";
 
@@ -27,7 +27,7 @@ type State =
   | "error";
 
 const status_text = {
-  configuring: "Let's go!",
+  configuring: "Start",
   requesting_agent: "Requesting agent...",
   requesting_token: "Requesting token...",
   connecting: "Connecting to room...",
@@ -65,11 +65,17 @@ export default function App() {
   const [roomError, setRoomError] = useState<boolean>(
     (roomQs && checkRoomUrl(roomQs)) || false
   );
+  const [mode, setMode] = useState<string | null>(null);
+  const [title, setTitle] = useState<string | null>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setMode(params.get('mode'));
+    setTitle(params.get('title'));
+  }, []);
 
   function handleRoomUrl() {
-    console.log("here", autoRoomCreation, serverUrl, checkRoomUrl(roomUrl));
     if ((autoRoomCreation && serverUrl) || checkRoomUrl(roomUrl)) {
-      console.log("here");
       setRoomError(false);
       setState("configuring");
     } else {
@@ -159,26 +165,59 @@ export default function App() {
     );
   }
 
-  if (state !== "idle") {
-    return (
-      <Card shadow className="animate-appear max-w-lg">
-        <CardHeader>
-          <CardTitle>Configure your devices</CardTitle>
-          <CardDescription>
-            Please configure your microphone and speakers below
-          </CardDescription>
-        </CardHeader>
-        <CardContent stack>
-          <div className="flex flex-row gap-2 bg-primary-50 px-4 py-2 md:p-2 text-sm items-center justify-center rounded-md font-medium text-pretty">
-            <Ear className="size-7 md:size-5 text-primary-400" />
-            Works best in a quiet environment with a good internet.
+  return (
+    <Card shadow className="animate-appear max-w-lg">
+      <CardHeader>
+        <CardTitle>Make things right.</CardTitle>
+        <CardDescription>Check before meeting with your interviewer.</CardDescription>
+      </CardHeader>
+      <CardContent stack>
+        {mode === 'behavior' && (
+          <div className="bg-blue-100 p-2 rounded-md mb-4">
+            <p className="font-semibold">Mode: Behaviour interview</p>
+            <p>Resume uploaded</p>
           </div>
-          <Configure
-            startAudioOff={startAudioOff}
-            handleStartAudioOff={() => setStartAudioOff(!startAudioOff)}
-          />
-        </CardContent>
-        <CardFooter>
+        )}
+        {mode === 'technical' && (
+          <div className="bg-green-100 p-2 rounded-md mb-4">
+            <p className="font-semibold">Mode: Technical interview</p>
+            {title && <p>Question: {title}</p>}
+          </div>
+        )}
+        {/* <RoomSetup
+          serverUrl={serverUrl}
+          roomQs={roomQs}
+          roomQueryStringValid={checkRoomUrl(roomQs)}
+          handleCheckRoomUrl={(url) => setRoomUrl(url)}
+          roomError={roomError}
+        /> */}
+        {state !== "idle" && (
+          <>
+            <div className="flex flex-row gap-2 bg-primary-50 px-4 py-2 md:p-2 text-sm items-center justify-center rounded-md font-medium text-pretty">
+              <Ear className="size-7 md:size-5 text-primary-400" />
+              Works best in a quiet environment with a good internet.
+            </div>
+            <Configure
+              startAudioOff={startAudioOff}
+              handleStartAudioOff={() => setStartAudioOff(!startAudioOff)}
+            />
+          </>
+        )}
+      </CardContent>
+      <CardFooter>
+        {state === "idle" ? (
+          <Button
+            id="nextBtn"
+            fullWidthMobile
+            key="next"
+            disabled={
+              !!((roomQs && !roomError) || (autoRoomCreation && !serverUrl))
+            }
+            onClick={() => handleRoomUrl()}
+          >
+            Next <ArrowRight />
+          </Button>
+        ) : (
           <Button
             key="start"
             fullWidthMobile
@@ -188,38 +227,7 @@ export default function App() {
             {state !== "configuring" && <Loader2 className="animate-spin" />}
             {status_text[state as keyof typeof status_text]}
           </Button>
-        </CardFooter>
-      </Card>
-    );
-  }
-
-  return (
-    <Card shadow className="animate-appear max-w-lg">
-      <CardHeader>
-        <CardTitle>Pipecat {import.meta.env.VITE_APP_TITLE}</CardTitle>
-        <CardDescription>Check configuration below</CardDescription>
-      </CardHeader>
-      <CardContent stack>
-        <RoomSetup
-          serverUrl={serverUrl}
-          roomQs={roomQs}
-          roomQueryStringValid={checkRoomUrl(roomQs)}
-          handleCheckRoomUrl={(url) => setRoomUrl(url)}
-          roomError={roomError}
-        />
-      </CardContent>
-      <CardFooter>
-        <Button
-          id="nextBtn"
-          fullWidthMobile
-          key="next"
-          disabled={
-            !!((roomQs && !roomError) || (autoRoomCreation && !serverUrl))
-          }
-          onClick={() => handleRoomUrl()}
-        >
-          Next <ArrowRight />
-        </Button>
+        )}
       </CardFooter>
     </Card>
   );

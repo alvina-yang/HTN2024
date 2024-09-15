@@ -39,7 +39,7 @@ from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
 from pipecat.pipeline.task import PipelineParams, PipelineTask
 
-from prompts import LLM_BASE_PROMPT, LLM_INTRO_PROMPT, LLM_TECHNICAL_BASE_PROMPT
+from prompts import LLM_BASE_PROMPT, LLM_INTRO_PROMPT, LLM_TECHNICAL_BASE_PROMPT, LLM_BEHAVIORAL_BASE_PROMPT
 from helpers import get_daily_config
 
 load_dotenv()
@@ -92,7 +92,7 @@ async def main(room_url, token=None):
 
         # --------------- Setup ----------------- #
 
-        message_history = [LLM_TECHNICAL_BASE_PROMPT]
+        message_history = [LLM_BEHAVIORAL_BASE_PROMPT]
 
         # We need aggregators to keep track of user and LLM responses
         llm_responses = LLMAssistantResponseAggregator(message_history)

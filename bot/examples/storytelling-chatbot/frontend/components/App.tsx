@@ -37,6 +37,7 @@ export default function Call() {
         }),
       });
 
+
       const { room_url, token } = await response.json();
 
       // Keep a reference to the room url for later

@@ -16,7 +16,7 @@ export default function ConfirmationPage() {
     // Store confirmation in localStorage
     localStorage.setItem("codeInterviewConfirmed", "true");
     // Navigate to the code interview page
-    window.location.href = "http://localhost:5173/?mode=behavioural";
+    window.location.href = "http://localhost:5173/?mode=behavior";
   };
 
   const [files, setFiles] = useState<File[]>([]);

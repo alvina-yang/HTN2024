@@ -3,6 +3,7 @@ import argparse
 import atexit
 from dataclasses import asdict
 from typing import Optional
+import logging
 
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
@@ -10,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from helpers import DailyConfig, get_daily_config, get_name_from_url, get_token
-from spawn import spawn_fly_machine, get_machine_status
+from spawn import spawn_fly_machine, get_machine_status, running_bot_locally
 
 MAX_BOTS_PER_ROOM = 1
 
@@ -67,9 +68,12 @@ async def start_agent(item: StartAgentItem) -> JSONResponse:
     room_url = item.room_url
     token = item.token
 
+    logging.debug(f"Starting agent for room: {room_url}")
+    logging.debug(f"Token: {token}")
+
     # Spawn a new agent machine, and join the user session
     try:
-        vm_id = spawn_fly_machine(room_url, token)
+        vm_id = running_bot_locally(room_url, token)
         bot_machines[vm_id] = room_url
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to start machine: {e}")
@@ -86,9 +90,9 @@ def get_status(vm_id: str):
         )
 
     # Check the status of the machine
-    status = get_machine_status(vm_id)
+    # status = get_machine_status(vm_id)
 
-    return JSONResponse({"bot_id": vm_id, "status": status})
+    return JSONResponse({"bot_id": vm_id})
 
 
 if __name__ == "__main__":
@@ -117,4 +121,4 @@ if __name__ == "__main__":
 
     config = parser.parse_args()
 
-    uvicorn.run("server:app", host=config.host, port=config.port, reload=config.reload)
+    uvicorn.run("server:app", host=config.host, port=config.port, reload=config.reload, log_level="debug")
