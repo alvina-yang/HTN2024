@@ -19,6 +19,21 @@ import chromadb
 client = chromadb.HttpClient(host="44.203.121.234", port=8000)
 embeddings = OllamaEmbeddings(model=model)
 
+import json
+from pathlib import Path
+
+# Define the file path
+file_path = Path(__file__).parent / 'behavior.json'
+
+# Read the JSON file and store the content in a variable
+def read_json_file(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    return data
+
+# Store the JSON content in a variable
+behavior_hardcode = read_json_file(file_path)
+
 db = Chroma(
     client=client,
     collection_name="leetcode_chroma",
@@ -60,10 +75,10 @@ agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 # Function to review code and give marks for each property
 def review_leetcode_solution(problem_description, code):
     preamble = """
-        You are a technical interviewer who is reviewing a candidate's code for a software engineering position. You need to provide feedback on what the candidate did well and what can be improved. Additionally, assign a score out of 100 for each review area: Correctness (40%), Efficiency (20%), Style & Readability (10%), Scalability (10%), Edge Cases (10%), and Error Handling (10%).
+        You are a technical interviewer who is reviewing a candidate's code for a software engineering position. You need to provide feedback on what the candidate did well and what can be improved. Additionally, assign a score out of 100 for each review area.
     """
 
-    human_input = f"""The following is a work-in-progress code interview code snippet.\n\nProblem: {problem_description}\n\nCode:\n{code}
+    human_input = f"""The following is a work-in-progress code interview code snippet.\n\nThe problem that the iterviewee trying to solve is: {problem_description}\n\nCode:\n{code}
     Review the code on:
     1. **Correctness**: Does the code solve the problem? If not, give examples of failing cases.
     2. **Time Complexity**: Analyze it and suggest optimizations, if any.
@@ -77,7 +92,7 @@ def review_leetcode_solution(problem_description, code):
     10. **Readability**: How can the code be made easier to understand?
     11. **Modularity**: Suggest improvements for making the code more modular if needed.
 
-    For each review area, provide feedback and a score out of 100 in the following format:
+    Generate a JSON that represents your detailed feedback in the following format:
     {{
         "correctness": {{
             "feedback": "Feedback on whether the solution is correct.",
@@ -116,10 +131,9 @@ def review_leetcode_solution(problem_description, code):
 @app.route('/api/review_code', methods=['POST'])
 def evaluate_code():
     data = request.get_json()
-    # TODO: change this to leetcode question
-    problem_description = data.get("problem_description")
+    problem_description = leetcode_question
     code = data.get("code")
-
+    print(f'code is: {code}')
     # Run the review function
     response = review_leetcode_solution(problem_description, code)
 
@@ -151,11 +165,13 @@ def review_behavioral_interview(chat_history):
     5. **Teamwork**: Did the candidate demonstrate the ability to collaborate and work well in a team?
     6. **Adaptability**: How well did the candidate handle unexpected or challenging questions?
     7. **Self-Awareness**: Did the candidate show awareness of their strengths and weaknesses?
-    8. **Culture Fit**: Did the candidate align with the company’s culture and values?
+    8. **Culture Fit**: Did the candidate align with the company's culture and values?
     9. **Emotional Intelligence**: How well did the candidate handle stressful or difficult parts of the interview?
     10. **Growth Mindset**: Did the candidate demonstrate a willingness to learn and improve?
 
-    For each review area, provide feedback and a score out of 100 in the following format:
+    If the code doesn't make sense, you can mention a bit and give 0 score.
+
+    Generate a JSON that represents your detailed feedback in the following format:
     {{
         "clarity": {{
             "feedback": "Feedback on the clarity of communication.",
@@ -185,10 +201,11 @@ def review_behavioral_interview(chat_history):
     })
 
 # API endpoint
-@app.route('/api/evaluate_behavioral', methods=['POST'])
+@app.route('/api/evaluate_behavior', methods=['POST'])
 def evaluate_behavioral():
     data = request.get_json()
     chat_history = data.get("chat_history")
+    chat_history = behavior_hardcode
 
     # Run the review function
     response = review_behavioral_interview(chat_history)
@@ -303,6 +320,7 @@ def find_lc_question():
         results = db.similarity_search(query, k=1)
         if results:
             leetcode_question = format_lc_document(results[0])
+            print(leetcode_question)
             return jsonify(leetcode_question), 200
         else:
             return jsonify({"error": "No results found"}), 404

@@ -8,6 +8,10 @@ def process_csv_file(file_path):
         reader = csv.DictReader(csvfile)
 
         for row in reader:
+            # Skip rows with empty 'Question Text'
+            if not row['Question Text'].strip():
+                print("Skipping row with empty Question Text")
+                continue
             processed_string = f"Question ID: {row['Question ID']}\n"
             processed_string += f"Title: {row['Question Title']}\n"
             processed_string += f"Slug: {row['Question Slug']}\n"
@@ -45,7 +49,6 @@ db = Chroma(
     collection_name="leetcode_chroma",
     embedding_function=embeddings
 )
-
 def add_to_chroma(chunks: list[Document]):
 
     # Calculate Page IDs.
