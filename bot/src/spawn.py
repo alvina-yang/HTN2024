@@ -70,7 +70,7 @@ def running_bot_locally(room_url: str, token: str, mode: str, analysis: str):
     logging.debug(f"Analysis: {analysis if analysis else 'None'}")
 
     # Machine configuration
-    cmd = f"python src/bot.py --room_url {room_url} --token {token} --mode {mode} --analysis {analysis}"
+    cmd = f"python src/bot.py --room_url {room_url} --token {token} --mode {mode} --analysis 'workattesla'"
     cmd = cmd.split()
 
     # Run the bot locally

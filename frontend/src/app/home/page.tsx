@@ -24,23 +24,23 @@ export default function HomePage() {
 
   const projects = [
     {
-      title: "Behavioural Interview",
-      description: "A live chat behavioural interview bot.",
+      title: "Behavioral Interview",
+      description: "Chat live with our AI-powered bot and tackle real-time behavioral questions like never before.",
       onClick: handleBehaviouralClick,
-      icon: <FontAwesomeIcon icon={faUser} className="h-10 w-10 text-zinc-100" />, // Add icon
+      icon: <FontAwesomeIcon icon={faUser} className="h-10 w-10 text-zinc-100" />, 
     },
     {
       title: "Coding Interview",
-      description: "A pair programming coding interview simulator.",
+      description: "Dive into pair programming and ace the coding interview with our interactive simulator.",
       onClick: handleCodeClick,
-      icon: <FontAwesomeIcon icon={faCode} className="h-10 w-10 text-zinc-100" />, // Add icon
+      icon: <FontAwesomeIcon icon={faCode} className="h-10 w-10 text-zinc-100" />, 
     },
     {
-      title: "Accounting",
-      description: "An accounting interview bot.",
+      title: "Accounting Interview",
+      description: "Crunch numbers and master the accounting interview with our AI-driven assistant.",
       onClick: handleAccountingClick,
-      icon: <FontAwesomeIcon icon={faTable} className="h-10 w-10 text-zinc-100" />, // Add icon
-    },
+      icon: <FontAwesomeIcon icon={faTable} className="h-10 w-10 text-zinc-100" />, 
+    },    
   ];
 
   return (

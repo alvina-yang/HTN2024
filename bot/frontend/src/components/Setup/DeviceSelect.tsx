@@ -83,6 +83,7 @@ export const DeviceSelect: React.FC<DeviceSelectProps> = ({
 
       <Field label="Microphone:" error={hasMicError}>
         <Select
+          className="bg-zinc-900 text-white border-gray-600"
           onChange={(e) => handleMicrophoneChange(e.target.value)}
           defaultValue={currentMic?.device.deviceId}
           icon={<Mic size={24} />}
@@ -91,26 +92,36 @@ export const DeviceSelect: React.FC<DeviceSelectProps> = ({
             <option value="">Loading devices...</option>
           ) : (
             microphones.map((m) => (
-              <option key={m.device.deviceId} value={m.device.deviceId}>
+              <option
+                key={m.device.deviceId}
+                value={m.device.deviceId}
+                className="bg-zinc-800 text-white"
+              >
                 {m.device.label}
               </option>
             ))
           )}
         </Select>
-        {!hideMeter && <AudioIndicatorBar />}
       </Field>
 
       <Field label="Speakers:">
         <Select
+          className="bg-zinc-900 text-white border-gray-600"
           icon={<Speaker size={24} />}
           onChange={(e) => handleSpeakerChange(e.target.value)}
           defaultValue={currentSpeaker?.device.deviceId}
         >
           {speakers.length === 0 ? (
-            <option value="default">Use system default</option>
+            <option value="default" className="bg-zinc-800 text-white">
+              Use system default
+            </option>
           ) : (
             speakers.map((m) => (
-              <option key={m.device.deviceId} value={m.device.deviceId}>
+              <option
+                key={m.device.deviceId}
+                value={m.device.deviceId}
+                className="bg-zinc-800 text-white"
+              >
                 {m.device.label}
               </option>
             ))

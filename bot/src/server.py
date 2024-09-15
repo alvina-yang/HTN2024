@@ -59,7 +59,7 @@ class StartAgentItem(BaseModel):
     room_url: str
     token: str
     mode: str
-    analysisData: str
+    # analysisData: str
 
 
 @app.post("/start")
@@ -70,7 +70,7 @@ async def start_agent(item: StartAgentItem) -> JSONResponse:
     room_url = item.room_url
     token = item.token
     mode = item.mode
-    analysis = item.analysisData
+    # analysis = item.analysisData
 
     logging.debug(f"Starting agent for room: {room_url}")
     logging.debug(f"Token: {token}")
@@ -83,7 +83,7 @@ async def start_agent(item: StartAgentItem) -> JSONResponse:
 
     # Spawn a new agent machine, and join the user session
     try:
-        vm_id = running_bot_locally(room_url, token, mode, analysis)
+        vm_id = running_bot_locally(room_url, token, mode, "workatapple")
         bot_machines[vm_id] = room_url
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to start machine: {e}")

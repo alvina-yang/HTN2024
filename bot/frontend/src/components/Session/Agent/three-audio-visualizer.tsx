@@ -8,6 +8,7 @@ import React from "react";
 
 export const ThreeAudioVisualizer = ({ frequency }: { frequency: number }) => {
   const mountRef = useRef<HTMLDivElement>(null);
+  const soundRef = useRef<THREE.Audio | null>(null);
 
   useEffect(() => {
     // Initialize Three.js scene
@@ -23,7 +24,7 @@ export const ThreeAudioVisualizer = ({ frequency }: { frequency: number }) => {
       0.1,
       1000
     );
-    camera.position.set(0, -2, 14);
+    camera.position.set(0, 0, 10); // Adjusted camera position
 
     // Set bloom pass and composer
     const params = {
@@ -48,7 +49,7 @@ export const ThreeAudioVisualizer = ({ frequency }: { frequency: number }) => {
     // Set uniforms for shader
     const uniforms = {
       u_time: { value: 0.0 },
-      u_frequency: { value: frequency || 0.0 }, // Frequency uniform, controlled by props
+      u_frequency: { value: 0.0 },
       u_red: { value: 0.3 },
       u_green: { value: 0.9 },
       u_blue: { value: 1.0 },
@@ -62,34 +63,17 @@ export const ThreeAudioVisualizer = ({ frequency }: { frequency: number }) => {
       wireframe: true,
     });
 
-    // Define geometry, you can make it smaller or larger by changing the first parameter
-    const geometry = new THREE.IcosahedronGeometry(2, 30);
+    const geometry = new THREE.IcosahedronGeometry(1.5, 30);
     const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(0, 0, 0); // Ensure the mesh is at the center of the scene
     scene.add(mesh);
-
-    // Mouse movement handling
-    let mouseX = 0;
-    let mouseY = 0;
-    const handleMouseMove = (e: MouseEvent) => {
-      const windowHalfX = window.innerWidth / 2;
-      const windowHalfY = window.innerHeight / 2;
-      mouseX = (e.clientX - windowHalfX) / 100;
-      mouseY = (e.clientY - windowHalfY) / 100;
-    };
-    document.addEventListener("mousemove", handleMouseMove);
 
     // Animation loop
     const clock = new THREE.Clock();
     const animate = () => {
-      camera.position.x += (mouseX - camera.position.x) * 0.05;
-      camera.position.y += (-mouseY - camera.position.y) * 0.5;
-      camera.lookAt(scene.position);
-
-      // Update time and frequency for the distortion
       uniforms.u_time.value = clock.getElapsedTime();
-      uniforms.u_frequency.value = frequency; // Use the frequency prop to distort geometry
+      uniforms.u_frequency.value = frequency;
 
-      // Render the scene
       bloomComposer.render();
       requestAnimationFrame(animate);
     };
@@ -107,12 +91,11 @@ export const ThreeAudioVisualizer = ({ frequency }: { frequency: number }) => {
     // Clean up on unmount
     return () => {
       window.removeEventListener("resize", handleResize);
-      document.removeEventListener("mousemove", handleMouseMove);
       if (renderer.domElement) {
         mountRef.current?.removeChild(renderer.domElement);
       }
     };
-  }, [frequency]); // Re-run the effect when frequency changes
+  }, [frequency]);
 
   return (
     <div>
@@ -126,9 +109,8 @@ export const ThreeAudioVisualizer = ({ frequency }: { frequency: number }) => {
           uniform float u_frequency;
 
           void main() {
-            // Distortion based on frequency input
-            float noise = 3.0 * u_frequency; 
-            vec3 newPosition = position + normal * (u_frequency / 5.0); // Amplified distortion
+            float noise = 3.0 * u_frequency;
+            vec3 newPosition = position + normal * (u_frequency / 10.0);
             gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
           }
         `,

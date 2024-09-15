@@ -1,51 +1,52 @@
-2024-09-15 06:37:59.896 | INFO     | processors:<module>:32 - Default voice ID: FGY2WhTYpPnrIDTdsKH5
+2024-09-15 07:51:22.507 | INFO     | processors:<module>:32 - Default voice ID: FGY2WhTYpPnrIDTdsKH5
 INFO:root:Arguments parsed haha
-2024-09-15 06:37:59.903 | DEBUG    | pipecat.vad.silero:__init__:42 - Loading Silero VAD model...
+2024-09-15 07:51:22.515 | DEBUG    | pipecat.vad.silero:__init__:42 - Loading Silero VAD model...
 Using cache found in /Users/leoleo/.cache/torch/hub/snakers4_silero-vad_master
-2024-09-15 06:38:00.123 | DEBUG    | pipecat.vad.silero:__init__:50 - Loaded Silero VAD
-INFO:root:Transport created for room:https://cloudsking.daily.co/TY77JbSQHjknPtuGJr7j
+2024-09-15 07:51:22.822 | DEBUG    | pipecat.vad.silero:__init__:50 - Loaded Silero VAD
+INFO:root:Transport created for room:https://cloudsking.daily.co/zERCjfOK6jTZq4wkOalJ
 INFO:root:Trying to use Groq as base service
-2024-09-15 06:38:00.133 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking PipelineSource#0 -> DailyInputTransport#0
-2024-09-15 06:38:00.133 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking DailyInputTransport#0 -> DeepgramTerrify#0
-2024-09-15 06:38:00.133 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking DeepgramTerrify#0 -> TranscriptionLogger#0
-2024-09-15 06:38:00.133 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking TranscriptionLogger#0 -> LLMUserResponseAggregator#0
-2024-09-15 06:38:00.133 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking LLMUserResponseAggregator#0 -> OpenAILLMService#0
-2024-09-15 06:38:00.133 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking OpenAILLMService#0 -> ElevenLabsTerrify#0
-2024-09-15 06:38:00.133 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking ElevenLabsTerrify#0 -> DailyOutputTransport#0
-2024-09-15 06:38:00.133 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking DailyOutputTransport#0 -> LLMAssistantResponseAggregator#0
-2024-09-15 06:38:00.133 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking LLMAssistantResponseAggregator#0 -> PipelineSink#0
-2024-09-15 06:38:00.133 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking Source#0 -> Pipeline#0
-2024-09-15 06:38:00.133 | DEBUG    | pipecat.pipeline.runner:run:28 - Runner PipelineRunner#0 started running PipelineTask#0
-2024-09-15 06:38:00.134 | INFO     | pipecat.transports.services.daily:join:240 - Joining https://cloudsking.daily.co/TY77JbSQHjknPtuGJr7j
-2024-09-15 06:38:00.704 | INFO     | pipecat.transports.services.daily:on_participant_joined:452 - Participant joined 3481a606-d563-4818-9ef4-11579f4c918e
-INFO:root:Participant joined: 3481a606-d563-4818-9ef4-11579f4c918e
-2024-09-15 06:38:01.711 | INFO     | pipecat.transports.services.daily:join:262 - Joined https://cloudsking.daily.co/TY77JbSQHjknPtuGJr7j
-2024-09-15 06:38:01.835 | DEBUG    | pipecat.services.deepgram:start:136 - DeepgramTerrify#0: Connected to Deepgram
-2024-09-15 06:38:01.835 | DEBUG    | pipecat.services.openai:_stream_chat_completions:96 - Generating chat: [{"content": "You are a highly experienced interviewer specializing in technical interviews for roles in software engineering, data science, and machine learning. Your job is to ask technical questions, provide constructive feedback, and guide the interviewee through challenging concepts without giving away direct answers. Start by asking them to introduce themselves and their technical background. ", "role": "system", "name": "system"}]
+2024-09-15 07:51:22.840 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking PipelineSource#0 -> DailyInputTransport#0
+2024-09-15 07:51:22.840 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking DailyInputTransport#0 -> DeepgramTerrify#0
+2024-09-15 07:51:22.840 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking DeepgramTerrify#0 -> TranscriptionLogger#0
+2024-09-15 07:51:22.840 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking TranscriptionLogger#0 -> LLMUserResponseAggregator#0
+2024-09-15 07:51:22.840 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking LLMUserResponseAggregator#0 -> OpenAILLMService#0
+2024-09-15 07:51:22.840 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking OpenAILLMService#0 -> ElevenLabsTerrify#0
+2024-09-15 07:51:22.841 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking ElevenLabsTerrify#0 -> DailyOutputTransport#0
+2024-09-15 07:51:22.841 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking DailyOutputTransport#0 -> LLMAssistantResponseAggregator#0
+2024-09-15 07:51:22.841 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking LLMAssistantResponseAggregator#0 -> PipelineSink#0
+2024-09-15 07:51:22.841 | DEBUG    | pipecat.processors.frame_processor:link:78 - Linking Source#0 -> Pipeline#0
+2024-09-15 07:51:22.842 | DEBUG    | pipecat.pipeline.runner:run:28 - Runner PipelineRunner#0 started running PipelineTask#0
+2024-09-15 07:51:22.843 | INFO     | pipecat.transports.services.daily:join:240 - Joining https://cloudsking.daily.co/zERCjfOK6jTZq4wkOalJ
+2024-09-15 07:51:23.331 | INFO     | pipecat.transports.services.daily:on_participant_joined:452 - Participant joined 96358962-2161-4db2-960f-2109c14655a5
+INFO:root:Participant joined: 96358962-2161-4db2-960f-2109c14655a5
+2024-09-15 07:51:24.341 | INFO     | pipecat.transports.services.daily:join:262 - Joined https://cloudsking.daily.co/zERCjfOK6jTZq4wkOalJ
+2024-09-15 07:51:24.480 | DEBUG    | pipecat.services.deepgram:start:136 - DeepgramTerrify#0: Connected to Deepgram
+2024-09-15 07:51:24.482 | DEBUG    | pipecat.services.openai:_stream_chat_completions:96 - Generating chat: [{"content": "You are a highly experienced interviewer specializing in technical interviews for roles in software engineering, data science, and machine learning. Your job is to ask technical questions, provide constructive feedback, and guide the interviewee through challenging concepts without giving away direct answers. Start by asking them with a warm welcome, and then ask them to to introduce themselves.  Then follow the instruction based on more prompt.", "role": "system", "name": "system"}]
 INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2024-09-15 06:38:02.050 | DEBUG    | pipecat.processors.frame_processor:stop_ttfb_metrics:68 - OpenAILLMService#0 TTFB: 0.21427083015441895
-2024-09-15 06:38:02.051 | DEBUG    | pipecat.services.elevenlabs:run_tts:38 - Generating TTS: [Hello!]
-2024-09-15 06:38:02.609 | DEBUG    | pipecat.processors.frame_processor:stop_ttfb_metrics:68 - ElevenLabsTerrify#0 TTFB: 0.5584101676940918
-2024-09-15 06:38:02.861 | DEBUG    | pipecat.services.elevenlabs:run_tts:38 - Generating TTS: [I'm excited to meet you and discuss your qualifications for the role.]
-2024-09-15 06:38:03.858 | DEBUG    | pipecat.services.elevenlabs:run_tts:38 - Generating TTS: [Could you please introduce yourself and share a brief overview of your technical background?]
-2024-09-15 06:38:10.472 | DEBUG    | pipecat.transports.base_input:_handle_interruptions:115 - User started speaking
-2024-09-15 06:38:10.772 | DEBUG    | processors:process_frame:57 - Transcription: Yes.
-2024-09-15 06:38:12.052 | DEBUG    | pipecat.transports.base_input:_handle_interruptions:126 - User stopped speaking
-2024-09-15 06:38:12.070 | DEBUG    | processors:process_frame:57 - Transcription: Next question.
-2024-09-15 06:38:12.071 | DEBUG    | pipecat.services.openai:_stream_chat_completions:96 - Generating chat: [{"content": " You are a highly experienced and professional interviewer specializing in technical interviews for roles in software engineering, data science, and machine learning. Your job is to ask technical questions, provide constructive feedback, and guide the interviewee through challenging concepts without giving away direct answers. Follow this structure:     Don't reply with any code or technical jargon.     Don't reply anything that you can't pronounce or it is not common in English.     Don't use any punctuation in your responses.     Your reponse should be vocalized.     You shouldn't provide any answer to the interviewee, you shouldn't give too explicit hints. Give guided questions and ask them to think.    1. Start with a greeting and introduce yourself as the interviewer.     2. Ask one technical question at a time. Your questions should cover a range of difficulty levels and topics like algorithms, data structures, machine learning, and system design. For coding questions, specify the expected language, and ask for time and space complexities of solutions.     3. After the interviewee responds, provide feedback on their answer. If they made any mistakes, point them out in a constructive way, and guide them to think of an alternative solution or optimization.     4. If the interviewee seems to struggle, ask probing questions or offer hints, but do not provide the full solution.     5. Summarize each question\u2019s learning points before moving to the next one.     6. Maintain a professional and supportive tone throughout the interview.     7. After a set of 5 questions, ask a behavioral or open-ended question to assess communication and thought process.     8. After all questions, wrap up the interview with feedback and suggest areas for improvement or learning.     9. Ensure that the interview feels conversational, encouraging interaction from the interviewee.     Keep all responses short and no longer than a couple of sentences.     Begin by greeting the interviewee and starting with the first question, Two Sum. ", "role": "system", "name": "system"}, {"content": " Hello! I'm excited to meet you and discuss your qualifications for the role.", "role": "assistant", "name": "assistant"}, {"content": " Yes. Next question.", "role": "user", "name": "user"}]
+2024-09-15 07:51:24.778 | DEBUG    | pipecat.processors.frame_processor:stop_ttfb_metrics:68 - OpenAILLMService#0 TTFB: 0.29599881172180176
+2024-09-15 07:51:24.783 | DEBUG    | pipecat.services.elevenlabs:run_tts:38 - Generating TTS: [Welcome to the interview!]
+2024-09-15 07:51:25.432 | DEBUG    | pipecat.processors.frame_processor:stop_ttfb_metrics:68 - ElevenLabsTerrify#0 TTFB: 0.6487841606140137
+2024-09-15 07:51:25.721 | DEBUG    | pipecat.services.elevenlabs:run_tts:38 - Generating TTS: [I'm excited to get to know you better and explore your technical skills.]
+2024-09-15 07:51:26.693 | DEBUG    | pipecat.services.elevenlabs:run_tts:38 - Generating TTS: [Could you please introduce yourself and share a little bit about your background and interests?]
+2024-09-15 07:51:29.906 | DEBUG    | pipecat.transports.base_input:_handle_interruptions:115 - User started speaking
+2024-09-15 07:51:30.415 | DEBUG    | pipecat.transports.base_input:_handle_interruptions:126 - User stopped speaking
+2024-09-15 07:51:30.948 | DEBUG    | pipecat.transports.base_input:_handle_interruptions:115 - User started speaking
+2024-09-15 07:51:31.585 | DEBUG    | pipecat.transports.base_input:_handle_interruptions:126 - User stopped speaking
+2024-09-15 07:51:31.660 | DEBUG    | processors:process_frame:57 - Transcription: Codebase.
+2024-09-15 07:51:31.660 | DEBUG    | pipecat.services.openai:_stream_chat_completions:96 - Generating chat: [{"content": " You are a highly experienced and professional interviewer specializing in technical interviews for roles in software engineering, data science, and machine learning. Your job is to ask technical questions, provide constructive feedback, and guide the interviewee through challenging concepts without giving away direct answers.      Mention this is a pure technical question interview at the beginning.    Follow this structure:     Don't reply with any code or technical jargon.     Don't reply anything that you can't pronounce or it is not common in English.     Don't use any punctuation in your responses this including but not limited to comma, colon, semicolon etc., brackets, some json format stuff     Your reponse should be vocalized.     You shouldn't provide any answer to the interviewee, you shouldn't give too explicit hints. Give guided questions and ask them to think.    1. Start with a greeting and introduce yourself as the interviewer.     2. Ask one technical question at a time. Your questions should cover a range of difficulty levels and topics like algorithms, data structures, machine learning, and system design. For coding questions, specify the expected language, and ask for time and space complexities of solutions.     3. After the interviewee responds, provide feedback on their answer. If they made any mistakes, point them out in a constructive way, and guide them to think of an alternative solution or optimization.     4. If the interviewee seems to struggle, ask probing questions or offer hints, but do not provide the full solution.     5. Summarize each question\u2019s learning points before moving to the next one.     6. Maintain a professional and supportive tone throughout the interview.     7. After a set of 5 questions, ask a behavioral or open-ended question to assess communication and thought process.     8. After all questions, wrap up the interview with feedback and suggest areas for improvement or learning.     9. Ensure that the interview feels conversational, encouraging interaction from the interviewee.     Keep all responses short and no longer than a couple of sentences.     Begin by greeting the interviewee and starting with the first question, Two Sum. ", "role": "system", "name": "system"}, {"content": " Welcome to the interview!", "role": "assistant", "name": "assistant"}, {"content": " Codebase.", "role": "user", "name": "user"}]
 INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2024-09-15 06:38:12.261 | DEBUG    | pipecat.processors.frame_processor:stop_ttfb_metrics:68 - OpenAILLMService#0 TTFB: 0.19014716148376465
-2024-09-15 06:38:12.328 | DEBUG    | pipecat.services.elevenlabs:run_tts:38 - Generating TTS: [Could you please describe the concept of a stack data structure and its common operations?]
-2024-09-15 06:38:13.086 | DEBUG    | pipecat.processors.frame_processor:stop_ttfb_metrics:68 - ElevenLabsTerrify#0 TTFB: 0.7578990459442139
-{"timestamp":"2024-09-15T10:38:18.098127Z","level":"ERROR","fields":{"message":"no subscription for consumer: ConsumerId(\"1435bd90-8d40-4e0e-95ee-f0109c63be0e\")"},"target":"daily_core::call_manager::events::from_sfu::soup_consumer_closed"}
-2024-09-15 06:38:18.098 | INFO     | pipecat.transports.services.daily:on_participant_left:462 - Participant left 3481a606-d563-4818-9ef4-11579f4c918e
-INFO:root:Participant left: 3481a606-d563-4818-9ef4-11579f4c918e
-2024-09-15 06:38:18.099 | INFO     | pipecat.transports.services.daily:leave:336 - Leaving https://cloudsking.daily.co/TY77JbSQHjknPtuGJr7j
-{"timestamp":"2024-09-15T10:38:18.100962Z","level":"ERROR","fields":{"message":"Mediasoup action clear consumer failed: ConsumerNoLongerExists(ConsumerId(\"1435bd90-8d40-4e0e-95ee-f0109c63be0e\"))"},"target":"daily_core::call_manager::mediasoup"}
-2024-09-15 06:38:18.108 | INFO     | pipecat.transports.services.daily:leave:345 - Left https://cloudsking.daily.co/TY77JbSQHjknPtuGJr7j
-2024-09-15 06:38:18.109 | DEBUG    | pipecat.pipeline.runner:run:32 - Runner PipelineRunner#0 finished running PipelineTask#0
+2024-09-15 07:51:31.808 | DEBUG    | pipecat.processors.frame_processor:stop_ttfb_metrics:68 - OpenAILLMService#0 TTFB: 0.14794325828552246
+2024-09-15 07:51:31.962 | DEBUG    | pipecat.services.elevenlabs:run_tts:38 - Generating TTS: [<tool_call>
+{"id": 0, "name": "interviewer", "arguments": {"question": "Given an array of integers, find two numbers that add up to a target sum and return their indices.]
+2024-09-15 07:51:32.154 | DEBUG    | pipecat.transports.base_input:_handle_interruptions:115 - User started speaking
+2024-09-15 07:51:34.351 | DEBUG    | pipecat.transports.base_input:_handle_interruptions:126 - User stopped speaking
+2024-09-15 07:51:34.413 | INFO     | pipecat.transports.services.daily:on_participant_left:462 - Participant left 96358962-2161-4db2-960f-2109c14655a5
+INFO:root:Participant left: 96358962-2161-4db2-960f-2109c14655a5
+2024-09-15 07:51:34.417 | INFO     | pipecat.transports.services.daily:leave:336 - Leaving https://cloudsking.daily.co/zERCjfOK6jTZq4wkOalJ
+2024-09-15 07:51:34.438 | INFO     | pipecat.transports.services.daily:leave:345 - Left https://cloudsking.daily.co/zERCjfOK6jTZq4wkOalJ
+2024-09-15 07:51:34.442 | DEBUG    | pipecat.pipeline.runner:run:32 - Runner PipelineRunner#0 finished running PipelineTask#0
 Trying to use Groq as base service
-Exception ignored in: <function Wave_write.__del__ at 0x16a3f0280>
+Exception ignored in: <function Wave_write.__del__ at 0x3005f43a0>
 Traceback (most recent call last):
   File "/Users/leoleo/miniforge3/envs/hahaai/lib/python3.10/wave.py", line 326, in __del__
     self.close()

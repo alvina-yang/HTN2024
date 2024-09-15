@@ -24,7 +24,9 @@
     "react-dom": "^18.2.0",
     "react-sparklines": "^1.7.0",
     "recoil": "^0.7.7",
-    "tailwind-merge": "^2.3.0"
+    "tailwind-merge": "^2.3.0",
+    "three": "^0.168.0",
+    "three-stdlib": "^2.33.0"
   },
   "devDependencies": {
     "@types/audioworklet": "^0.0.55",
@@ -32,6 +34,7 @@
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@types/react-sparklines": "^1.7.5",
+    "@types/three": "^0.168.0",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",

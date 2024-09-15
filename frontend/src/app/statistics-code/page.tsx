@@ -14,38 +14,10 @@ const getRandomBackground = () => {
     "bg-[linear-gradient(to_bottom_right,var(--blue-500),var(--indigo-500))]",
     "bg-[linear-gradient(to_bottom_right,var(--red-500),var(--amber-500))]",
   ];
-  // Randomly select a gradient from the list
   return gradients[Math.floor(Math.random() * gradients.length)];
 };
 
-// Simulating a dynamic response from the backend
-const fetchContent = () => [
-  {
-    title: "Collaborative Editing", 
-    description:
-      "Work together in real time with your team, clients, and stakeholders. Collaborate on documents, share ideas, and make decisions quickly. With our platform, you can streamline your workflow and increase productivity.",
-    percentage: 60, 
-  },
-  {
-    title: "Real time changes",
-    description:
-      "See changes as they happen. With our platform, you can track every modification in real time. No more confusion about the latest version of your project. Say goodbye to the chaos of version control and embrace the simplicity of real-time updates.",
-    percentage: 22,
-  },
-  {
-    title: "Version control",
-    description:
-      "Experience real-time updates and never stress about version control again. Our platform ensures that you're always working on the most recent version of your project, eliminating the need for constant manual updates. Stay in the loop, keep your team aligned, and maintain the flow of your work without any interruptions.",
-    percentage: 80,
-  },
-  {
-    title: "Running out of content",
-    description:
-      "Experience real-time updates and never stress about version control again. Our platform ensures that you're always working on the most recent version of your project, eliminating the need for constant manual updates.",
-    percentage: 20,
-  },
-];
-
+// Component for rendering the Pie Chart
 const PieChartContent = ({ percentage }: { percentage: number }) => (
   <div className="flex flex-col items-center justify-center text-white">
     <div className="w-[150px] h-[150px]">
@@ -66,15 +38,45 @@ const PieChartContent = ({ percentage }: { percentage: number }) => (
 const StickyScrollRevealDemo = () => {
   const [content, setContent] = useState<any[]>([]);
 
-  // Simulate fetching content from the backend
+  // Fetch content from the backend
   useEffect(() => {
-    const data = fetchContent();
-    // Add random backgrounds to each content item
-    const contentWithBackground = data.map((item) => ({
-      ...item,
-      background: getRandomBackground(),
-    }));
-    setContent(contentWithBackground);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://f025-2620-101-f000-7c0-00-4a68.ngrok-free.app/api/review_code",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ query: "Provide code review feedback" }), // Replace with appropriate query if necessary
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch review data.");
+        }
+
+        const data = await response.json();
+
+        // Transform the response into the required content structure
+        const transformedContent = Object.keys(data).map((key) => {
+          const feedbackData = data[key]; // Access the feedback and score for each key
+          return {
+            title: key, // The key is the title, e.g., 'correctness'
+            description: feedbackData.feedback, // The feedback is the description
+            percentage: feedbackData.score, // The score is used for the percentage
+            background: getRandomBackground(), // Generate random background
+          };
+        });
+
+        setContent(transformedContent);
+      } catch (error) {
+        console.error("Error fetching review data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -85,7 +87,6 @@ const StickyScrollRevealDemo = () => {
           description: item.description,
           content: (
             <div className={`h-full w-full ${item.background} flex items-center justify-center text-white`}>
-              {/* Display Pie Chart for each section */}
               <PieChartContent percentage={item.percentage} />
             </div>
           ),

@@ -84,15 +84,39 @@ export default function CodeEditorPage() {
     if (localStorage.getItem("codeInterviewConfirmed") !== "true") {
       router.push("/code-interview/confirmation");
     }
-  }, []);
+  }, [router]);
 
   const [isSaving, setIsSaving] = useState(false); // To simulate API call status
   const [changesEnabled, setChangesEnabled] = useState(true);
 
-  const handleAskForReview = () => {
+  // Function to handle the "Ask for Review" button
+  const handleAskForReview = async () => {
     setChangesEnabled(false);
     console.log("Changes disabled, code review requested.");
-    router.push('/statistics-code');
+
+    try {
+      // Send code to backend here
+      const reviewResponse = await fetch("https://f025-2620-101-f000-7c0-00-4a68.ngrok-free.app/api/review_code", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code: code, // The code written in the editor
+        }),
+      });
+
+      if (reviewResponse.ok) {
+        console.log("Code review request submitted successfully.");
+      } else {
+        console.error("Failed to submit code for review.");
+      }
+    } catch (error) {
+      console.error("Error submitting the review:", error);
+    }
+
+    // Navigate to the statistics page after the review is submitted
+    router.push("/statistics-code");
   };
 
   const sendCodeToBackend = (newCode: string) => {
@@ -123,7 +147,7 @@ export default function CodeEditorPage() {
           <div className="flex justify-between p-3 bg-zinc-800 text-white">
             <div className="flex items-center">
               <FormControl variant="standard" sx={{ minWidth: 120 }}>
-                <InputLabel id="language-select-label" sx={{ color: 'white' }}>
+                <InputLabel id="language-select-label" sx={{ color: "white" }}>
                   Language
                 </InputLabel>
                 <Select
@@ -133,14 +157,14 @@ export default function CodeEditorPage() {
                   onChange={handleLanguageChange}
                   label="Language"
                   sx={{
-                    color: 'white',
-                    '.MuiSelect-icon': { color: 'white' },
-                    '.MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'white',
+                    color: "white",
+                    ".MuiSelect-icon": { color: "white" },
+                    ".MuiOutlinedInput-notchedOutline": { borderColor: "white" },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "white",
                     },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#3f3f46',
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#3f3f46",
                     },
                   }}
                   MenuProps={{
@@ -166,7 +190,7 @@ export default function CodeEditorPage() {
             <Button
               borderRadius="1.85rem"
               className="bg-zinc-700 dark:bg-slate-900 text-slate-200 dark:text-white dark:border-slate-800"
-              onClick={handleAskForReview}
+              onClick={handleAskForReview} // Call the review function on click
             >
               Ask for Review
             </Button>
@@ -196,10 +220,10 @@ export default function CodeEditorPage() {
           {!loading && !error && question && (
             <>
               <h1 className="text-2xl text-gray-200 font-bold mb-4 break-words">
-                {question.title} 
+                {question.title}
               </h1>
               <pre className="bg-zinc-800 text-gray-300 p-4 rounded break-words whitespace-pre-wrap">
-                {question.text} 
+                {question.text}
               </pre>
             </>
           )}

@@ -1,32 +1,31 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   useAudioLevel,
   useAudioTrack,
   useParticipantIds,
 } from "@daily-co/daily-react";
 
-import FaceSVG from "./face.svg";
-
-import styles from "./styles.module.css";
+import { ThreeAudioVisualizer } from "./three-audio-visualizer"; // Import the Three.js visualizer
 
 export const Avatar: React.FC = () => {
   const remoteParticipantId = useParticipantIds({ filter: "remote" })[0];
   const audioTrack = useAudioTrack(remoteParticipantId);
-  const volRef = useRef<HTMLDivElement>(null);
+  const [frequency, setFrequency] = useState<number>(0); // Store the frequency in a state
 
+  // Use the Daily.co audio level hook to get the volume and scale it for the visualizer
   useAudioLevel(
     audioTrack?.persistentTrack,
     useCallback((volume) => {
-      if (!volRef.current) return;
-      volRef.current.style.transform = `scale(${Math.max(1, 1 + volume)})`;
+      const newFrequency = Math.max(1, 1 + volume); // Map the volume to a frequency range
+      setFrequency(newFrequency); // Update the frequency state
     }, [])
   );
 
   return (
-    <>
-      <img src={FaceSVG} alt="Face" className={styles.face} />
-      <div className={styles.faceBubble} ref={volRef} />
-    </>
+    <div>
+      {/* Pass the frequency to the Three.js visualizer */}
+      <ThreeAudioVisualizer frequency={frequency} />
+    </div>
   );
 };
 
