@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useDaily } from "@daily-co/daily-react";
 import { ArrowRight, Ear, Loader2 } from "lucide-react";
+
 import { BackgroundBeams } from "../../../frontend/src/components/ui/background-beams";
+
 import Session from "./components/Session";
 import { Configure, RoomSetup } from "./components/Setup";
 import { Alert } from "./components/ui/alert";
@@ -167,7 +169,7 @@ export default function App() {
   }
 
   return (
-    <div className="h-screen w-screen bg-black text-white flex items-center justify-center">
+    <div className="h-screen w-screen bg-black text-white flex items-center justify-center p-0 m-0">
     <BackgroundBeams />
     <Card
       shadow

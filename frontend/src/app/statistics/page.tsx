@@ -2,8 +2,7 @@
 import React from "react";
 import { StickyScroll } from "../../components/ui/sticky-scroll-reveal";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css"; // Import styles for the progress bar
-import {BackgroundGradient} from "../../components/ui/background-gradient";
+import "react-circular-progressbar/dist/styles.css"; 
 const content = [
   {
     title: "Collaborative Editing",
@@ -38,7 +37,6 @@ const content = [
 const PieChartContent = ({ percentage }: { percentage: number }) => (
   <div className="flex flex-col items-center justify-center text-white">
     <div className="w-[150px] h-[150px]">
-      {/* Animated Pie Chart */}
       <CircularProgressbar
         value={percentage}
         text={`${percentage}%`}
