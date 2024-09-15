@@ -50,90 +50,93 @@ export default function DevicePicker({}: Props) {
   }, [daily, microphones]);
 
   return (
-    <div className="flex flex-col gap-5">
-      <section>
-        <label className="uppercase text-sm tracking-wider text-gray-500">
-          Microphone:
-        </label>
-        <div className="flex flex-row gap-4 items-center mt-2">
-          <IconMicrophone size={24} />
-          <div className="flex flex-col flex-1 gap-3">
-            <Select onValueChange={handleMicrophoneChange}>
-              <SelectTrigger className="">
-                <SelectValue
-                  placeholder={
-                    hasMicError ? "error" : currentMic?.device?.label
-                  }
-                />
-              </SelectTrigger>
-              <SelectContent>
-                {hasMicError && (
-                  <option value="error" disabled>
-                    No microphone access.
-                  </option>
-                )}
-
-                {microphones.map((m) => (
-                  <SelectItem key={m.device.deviceId} value={m.device.deviceId}>
-                    {m.device.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <AudioIndicatorBar />
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <label className="uppercase text-sm tracking-wider text-gray-500">
-          Speakers:
-        </label>
-        <div className="flex flex-row gap-4 items-center mt-2">
-          <IconDeviceSpeaker size={24} />
-          <Select onValueChange={handleSpeakerChange}>
-            <SelectTrigger className="">
-              <SelectValue placeholder={currentSpeaker?.device?.label} />
+    <div className="flex flex-col gap-5 text-white">
+    <section>
+      <label className="uppercase text-sm tracking-wider text-gray-500 dark:text-gray-300">
+        Microphone:
+      </label>
+      <div className="flex flex-row gap-4 items-center mt-2">
+        <IconMicrophone size={24} className="text-white dark:text-gray-300" />
+        <div className="flex flex-col flex-1 gap-3">
+          <Select onValueChange={handleMicrophoneChange}>
+            <SelectTrigger className="dark:bg-gray-700 dark:text-white">
+              <SelectValue
+                placeholder={hasMicError ? "error" : currentMic?.device?.label}
+              />
             </SelectTrigger>
-            <SelectContent>
-              {speakers.map((m) => (
-                <SelectItem key={m.device.deviceId} value={m.device.deviceId}>
+            <SelectContent className="dark:bg-gray-800 dark:text-white">
+              {hasMicError && (
+                <SelectItem value="error" disabled>
+                  No microphone access.
+                </SelectItem>
+              )}
+
+              {microphones.map((m) => (
+                <SelectItem
+                  key={m.device.deviceId}
+                  value={m.device.deviceId}
+                >
                   {m.device.label}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
+          <AudioIndicatorBar />
         </div>
-      </section>
-      {hasMicError && (
-        <div className="error">
-          {micState === "blocked" ? (
-            <p>
-              Please check your browser and system permissions. Make sure that
-              this app is allowed to access your microphone.
-            </p>
-          ) : micState === "in-use" ? (
-            <p>
-              Your microphone is being used by another app. Please close any
-              other apps using your microphone and restart this app.
-            </p>
-          ) : micState === "not-found" ? (
-            <p>
-              No microphone seems to be connected. Please connect a microphone.
-            </p>
-          ) : micState === "not-supported" ? (
-            <p>
-              This app is not supported on your device. Please update your
-              software or use a different device.
-            </p>
-          ) : (
-            <p>
-              There seems to be an issue accessing your microphone. Try
-              restarting the app or consult a system administrator.
-            </p>
-          )}
-        </div>
-      )}
-    </div>
+      </div>
+    </section>
+
+    <section>
+      <label className="uppercase text-sm tracking-wider text-gray-500 dark:text-gray-300">
+        Speakers:
+      </label>
+      <div className="flex flex-row gap-4 items-center mt-2">
+        <IconDeviceSpeaker
+          size={24}
+          className="text-white dark:text-gray-300"
+        />
+        <Select onValueChange={handleSpeakerChange}>
+          <SelectTrigger className="dark:bg-gray-700 dark:text-white">
+            <SelectValue placeholder={currentSpeaker?.device?.label} />
+          </SelectTrigger>
+          <SelectContent className="dark:bg-gray-800 dark:text-white">
+            {speakers.map((m) => (
+              <SelectItem key={m.device.deviceId} value={m.device.deviceId}>
+                {m.device.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </section>
+
+    {hasMicError && (
+      <div className="error text-red-500 dark:text-red-400">
+        {micState === "blocked" ? (
+          <p>
+            Please check your browser and system permissions. Make sure that
+            this app is allowed to access your microphone.
+          </p>
+        ) : micState === "in-use" ? (
+          <p>
+            Your microphone is being used by another app. Please close any
+            other apps using your microphone and restart this app.
+          </p>
+        ) : micState === "not-found" ? (
+          <p>No microphone seems to be connected. Please connect a microphone.</p>
+        ) : micState === "not-supported" ? (
+          <p>
+            This app is not supported on your device. Please update your
+            software or use a different device.
+          </p>
+        ) : (
+          <p>
+            There seems to be an issue accessing your microphone. Try
+            restarting the app or consult a system administrator.
+          </p>
+        )}
+      </div>
+    )}
+  </div>
   );
 }

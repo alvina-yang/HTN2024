@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDaily } from "@daily-co/daily-react";
 import { ArrowRight, Ear, Loader2 } from "lucide-react";
-
+import { BackgroundBeams } from "../../../frontend/src/components/ui/background-beams";
 import Session from "./components/Session";
 import { Configure, RoomSetup } from "./components/Setup";
 import { Alert } from "./components/ui/alert";
@@ -107,7 +107,8 @@ export default function App() {
         data = await fetch_start_agent(
           config.room_url,
           config.token,
-          serverUrl
+          serverUrl,
+          mode
         );
 
         if (data.error) {
@@ -166,34 +167,34 @@ export default function App() {
   }
 
   return (
-    <Card shadow className="animate-appear max-w-lg">
+    <div className="h-screen w-screen bg-black text-white flex items-center justify-center">
+    <BackgroundBeams />
+    <Card
+      shadow
+      className="animate-appear max-w-lg bg-zinc-900 text-white dark:bg-zinc-900 dark:text-white"
+    >
       <CardHeader>
-        <CardTitle>Make things right.</CardTitle>
-        <CardDescription>Check before meeting with your interviewer.</CardDescription>
+        <CardTitle>Configure your audio devices.</CardTitle>
+        <CardDescription>
+          Check before meeting with our AI bot for the best experience.
+        </CardDescription>
       </CardHeader>
       <CardContent stack>
-        {mode === 'behavior' && (
-          <div className="bg-blue-100 p-2 rounded-md mb-4">
+        {mode === "behavior" && (
+          <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-md mb-4">
             <p className="font-semibold">Mode: Behaviour interview</p>
             <p>Resume uploaded</p>
           </div>
         )}
-        {mode === 'technical' && (
-          <div className="bg-green-100 p-2 rounded-md mb-4">
+        {mode === "technical" && (
+          <div className="bg-green-100 dark:bg-green-900 p-2 rounded-md mb-4">
             <p className="font-semibold">Mode: Technical interview</p>
             {title && <p>Question: {title}</p>}
           </div>
         )}
-        {/* <RoomSetup
-          serverUrl={serverUrl}
-          roomQs={roomQs}
-          roomQueryStringValid={checkRoomUrl(roomQs)}
-          handleCheckRoomUrl={(url) => setRoomUrl(url)}
-          roomError={roomError}
-        /> */}
         {state !== "idle" && (
           <>
-            <div className="flex flex-row gap-2 bg-primary-50 px-4 py-2 md:p-2 text-sm items-center justify-center rounded-md font-medium text-pretty">
+            <div className="flex flex-row gap-2 bg-primary-50 dark:bg-zinc-700 px-4 py-2 md:p-2 text-sm items-center justify-center rounded-md font-medium text-pretty">
               <Ear className="size-7 md:size-5 text-primary-400" />
               Works best in a quiet environment with a good internet.
             </div>
@@ -219,7 +220,8 @@ export default function App() {
           </Button>
         ) : (
           <Button
-            key="start"
+            key="Start"
+            className="bg-zinc-800"
             fullWidthMobile
             onClick={() => start()}
             disabled={state !== "configuring"}
@@ -230,5 +232,6 @@ export default function App() {
         )}
       </CardFooter>
     </Card>
+    </div>
   );
 }

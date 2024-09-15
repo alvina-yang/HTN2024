@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
 
 export const BackgroundBeams = React.memo(
   ({ className }: { className?: string }) => {
@@ -109,7 +109,7 @@ export const BackgroundBeams = React.memo(
                   duration: Math.random() * 10 + 10,
                   ease: "easeInOut",
                   repeat: Infinity,
-                  delay: Math.random() * 10,
+                  delay: 0,
                 }}
               >
                 <stop stopColor="#18CCFC" stopOpacity="0"></stop>
