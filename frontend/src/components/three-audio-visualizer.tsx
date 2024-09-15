@@ -8,13 +8,13 @@ import React from "react";
 
 export const ThreeAudioVisualizer = () => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const soundRef = useRef<THREE.Audio | null>(null); // To reference the sound and stop it later
+  const soundRef = useRef<THREE.Audio | null>(null); // Ref to store sound
 
   useEffect(() => {
     // Initialize Three.js scene
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0);
+    renderer.setClearColor(0x000000, 0); // Transparent background
     mountRef.current?.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
@@ -50,15 +50,22 @@ export const ThreeAudioVisualizer = () => {
     const listener = new THREE.AudioListener();
     camera.add(listener);
     const sound = new THREE.Audio(listener);
-    soundRef.current = sound; // Save reference to sound
+    soundRef.current = sound; // Save the sound to ref
+
     const audioLoader = new THREE.AudioLoader();
+    let isPlaying = false;
 
     // Load the audio file
+    const playAudio = () => {
+      if (!isPlaying && soundRef.current) {
+        soundRef.current.play();
+        isPlaying = true;
+      }
+    };
+
     audioLoader.load("/assets/Beats.mp3", function (buffer) {
       sound.setBuffer(buffer);
-      window.addEventListener("click", function () {
-        sound.play();
-      });
+      window.addEventListener("click", playAudio); // Start playing on click
     });
 
     const analyser = new THREE.AudioAnalyser(sound, 32);
@@ -87,12 +94,13 @@ export const ThreeAudioVisualizer = () => {
     // Mouse movement handling
     let mouseX = 0;
     let mouseY = 0;
-    document.addEventListener("mousemove", (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       const windowHalfX = window.innerWidth / 2;
       const windowHalfY = window.innerHeight / 2;
       mouseX = (e.clientX - windowHalfX) / 100;
       mouseY = (e.clientY - windowHalfY) / 100;
-    });
+    };
+    document.addEventListener("mousemove", handleMouseMove);
 
     // Animation loop
     const clock = new THREE.Clock();
@@ -110,23 +118,26 @@ export const ThreeAudioVisualizer = () => {
     animate();
 
     // Window resize handling
-    window.addEventListener("resize", () => {
+    const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
       bloomComposer.setSize(window.innerWidth, window.innerHeight);
-    });
+    };
+    window.addEventListener("resize", handleResize);
 
     // Clean up on unmount
     return () => {
-      // Stop sound when leaving the page
+      // Stop the audio
       if (soundRef.current && soundRef.current.isPlaying) {
         soundRef.current.stop();
       }
-
-      window.removeEventListener("resize", () => {});
-      document.removeEventListener("mousemove", () => {});
-      mountRef.current?.removeChild(renderer.domElement);
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("click", playAudio); // Remove event listener for play
+      if (renderer.domElement) {
+        mountRef.current?.removeChild(renderer.domElement);
+      }
     };
   }, []);
 
