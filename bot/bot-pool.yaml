@@ -1,0 +1,18 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: bot-pool
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/metric: "concurrency"
+        autoscaling.knative.dev/target: "1"
+    spec:
+      containers:
+      - image: your-registry/terifai-bot:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: BOT_MODE
+          value: "pool"
