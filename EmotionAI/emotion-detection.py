@@ -10,7 +10,7 @@ emotion_short_history = []
 
 def run_flask_app():
     # Run the Flask app in a separate thread
-    app.run(host='0.0.0.0', port=5432)
+    app.run(host='0.0.0.0', port=5433)
 
 def run_emotion_detection():
     global emotion_long_history, emotion_short_history
