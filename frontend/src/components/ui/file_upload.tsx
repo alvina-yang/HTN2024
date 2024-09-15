@@ -47,7 +47,7 @@ export const FileUpload = ({
         const formData = new FormData();
         formData.append('file', newFiles[0]);
 
-        const response = await fetch('http://localhost:5678/api/upload_pdf', {
+        const response = await fetch('https://f025-2620-101-f000-7c0-00-4a68.ngrok-free.app/api/upload_pdf', {
           method: 'POST',
           body: formData,
           mode: 'cors',
