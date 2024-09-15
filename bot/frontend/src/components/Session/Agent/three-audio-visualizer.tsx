@@ -128,7 +128,7 @@ export const ThreeAudioVisualizer = ({ frequency }: { frequency: number }) => {
           void main() {
             // Distortion based on frequency input
             float noise = 3.0 * u_frequency; 
-            vec3 newPosition = position + normal * (u_frequency / 10.0); // Amplified distortion
+            vec3 newPosition = position + normal * (u_frequency / 5.0); // Amplified distortion
             gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
           }
         `,

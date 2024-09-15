@@ -59,7 +59,11 @@ export const Session = React.memo(
         setHasStarted(true);
       }, [hasStarted])
     );
-
+    const handleEndButtonClick = () => {
+      onLeave();
+      window.location.href = "http://localhost:3000/statistics"; // Redirect to /statistics
+    };
+    
     // Mute on join
     useEffect(() => {
       // Avoid immediately triggering interruption on load
@@ -213,7 +217,7 @@ export const Session = React.memo(
                 </Button>
               </TooltipTrigger>
             </Tooltip>
-            <Button onClick={() => onLeave()} className="ml-auto">
+            <Button  onClick={handleEndButtonClick} className="ml-auto">
               <LogOut size={16} />
               End
             </Button>
