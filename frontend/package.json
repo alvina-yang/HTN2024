@@ -27,10 +27,12 @@
     "@tsparticles/engine": "^3.5.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.5.0",
+    "@types/three": "^0.168.0",
     "@uiw/react-codemirror": "^4.23.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "dat.gui": "^0.7.9",
     "framer-motion": "^11.5.4",
     "lucide-react": "^0.441.0",
     "monaco-editor": "^0.51.0",
@@ -40,7 +42,8 @@
     "styled-components": "^6.1.13",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
-    "three": "^0.168.0"
+    "three": "^0.168.0",
+    "three-stdlib": "^2.33.0"
   },
   "devDependencies": {
     "@types/node": "^20",
