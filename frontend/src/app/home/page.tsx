@@ -11,11 +11,11 @@ export default function HomePage() {
   const router = useRouter();
 
   const handleBehaviouralClick = () => {
-    router.push("/behavioural-interview");
+    router.push("/confirmation-behavioural");
   };
 
   const handleCodeClick = () => {
-    router.push("/confirmation");
+    router.push("/confirmation-code");
   };
 
   const handleAccountingClick = () => {

@@ -8,6 +8,7 @@ import React from "react";
 
 export const ThreeAudioVisualizer = () => {
   const mountRef = useRef<HTMLDivElement>(null);
+  const soundRef = useRef<THREE.Audio | null>(null); // To reference the sound and stop it later
 
   useEffect(() => {
     // Initialize Three.js scene
@@ -49,6 +50,7 @@ export const ThreeAudioVisualizer = () => {
     const listener = new THREE.AudioListener();
     camera.add(listener);
     const sound = new THREE.Audio(listener);
+    soundRef.current = sound; // Save reference to sound
     const audioLoader = new THREE.AudioLoader();
 
     // Load the audio file
@@ -117,6 +119,11 @@ export const ThreeAudioVisualizer = () => {
 
     // Clean up on unmount
     return () => {
+      // Stop sound when leaving the page
+      if (soundRef.current && soundRef.current.isPlaying) {
+        soundRef.current.stop();
+      }
+
       window.removeEventListener("resize", () => {});
       document.removeEventListener("mousemove", () => {});
       mountRef.current?.removeChild(renderer.domElement);

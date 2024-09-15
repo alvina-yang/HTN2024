@@ -13,14 +13,14 @@ export function SidebarDemo() {
   const links = [
     {
       label: "Code Interview",
-      href: "/confirmation", // Navigation to code interview
+      href: "/confirmation-code", // Navigation to code interview
       icon: (
         <IconBrandTabler className="text-slate-200 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
       label: "Behavioural Interview",
-      href: "/behavioural-interview", // Navigation to behavioural interview
+      href: "/confirmation-behavioural", // Navigation to behavioural interview
       icon: (
         <IconUserBolt className="text-slate-200 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
