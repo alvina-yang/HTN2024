@@ -49,7 +49,7 @@ export const DeviceSelect: React.FC<DeviceSelectProps> = ({
   }, [daily, microphones]);
 
   return (
-    <div className="flex flex-col text-white flex-wrap gap-4">
+    <div className="flex flex-col flex-wrap gap-4">
       {hasMicError && (
         <Alert intent="danger" title="Device error">
           {micState === "blocked" ? (
@@ -81,12 +81,11 @@ export const DeviceSelect: React.FC<DeviceSelectProps> = ({
         </Alert>
       )}
 
-      <Field label="Microphone:" error={hasMicError} className="dark:text-gray-300">
+      <Field label="Microphone:" error={hasMicError}>
         <Select
           onChange={(e) => handleMicrophoneChange(e.target.value)}
           defaultValue={currentMic?.device.deviceId}
-          icon={<Mic size={24}  className="text-white dark:text-gray-300"/>}
-          className="bg-zinc-800 text-white"
+          icon={<Mic size={24} />}
         >
           {microphones.length === 0 ? (
             <option value="">Loading devices...</option>
@@ -98,14 +97,14 @@ export const DeviceSelect: React.FC<DeviceSelectProps> = ({
             ))
           )}
         </Select>
+        {!hideMeter && <AudioIndicatorBar />}
       </Field>
 
-      <Field label="Speakers:" className="dark:text-gray-300">
+      <Field label="Speakers:">
         <Select
-          icon={<Speaker size={24} className="text-white dark:text-gray-300"/>}
+          icon={<Speaker size={24} />}
           onChange={(e) => handleSpeakerChange(e.target.value)}
           defaultValue={currentSpeaker?.device.deviceId}
-          className="bg-zinc-800 text-white"
         >
           {speakers.length === 0 ? (
             <option value="default">Use system default</option>

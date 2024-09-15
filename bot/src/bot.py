@@ -39,7 +39,7 @@ from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
 from pipecat.pipeline.task import PipelineParams, PipelineTask
 
-from prompts import LLM_BASE_PROMPT, LLM_INTRO_PROMPT, LLM_TECHNICAL_BASE_PROMPT, LLM_BEHAVIORAL_BASE_PROMPT
+from prompts import LLM_BASE_PROMPT, LLM_INTRO_PROMPT, LLM_TECHNICAL_BASE_PROMPT
 from helpers import get_daily_config
 
 load_dotenv()
@@ -50,7 +50,7 @@ else:
     logging.basicConfig(level=logging.INFO)
 
 
-async def main(room_url, token=None, mode="behavior"):
+async def main(room_url, token=None):
     async with aiohttp.ClientSession() as session:
 
         # -------------- Transport --------------- #
@@ -92,11 +92,7 @@ async def main(room_url, token=None, mode="behavior"):
 
         # --------------- Setup ----------------- #
 
-        # If the mode is technical, we use the technical base prompt
-        if mode == "technical":
-            message_history = [LLM_TECHNICAL_BASE_PROMPT]
-        else:
-            message_history = [LLM_BEHAVIORAL_BASE_PROMPT]
+        message_history = [LLM_TECHNICAL_BASE_PROMPT]
 
         # We need aggregators to keep track of user and LLM responses
         llm_responses = LLMAssistantResponseAggregator(message_history)
@@ -170,7 +166,6 @@ if __name__ == "__main__":
     parser.add_argument("--room_url", type=str, help="Room URL")
     parser.add_argument("--token", type=str, help="Token")
     parser.add_argument("--default", action="store_true", help="Default configurations")
-    parser.add_argument("--mode", type=str, default="behavior", help="Mode of the bot")
     logging.info("Arguments parsed haha")
     config = parser.parse_args()
 
@@ -179,8 +174,5 @@ if __name__ == "__main__":
 
     if config.room_url is None:
         raise ValueError("Room URL is required")
-    
-    if config.mode not in ["behavior", "technical"]:
-        raise ValueError("Mode must be either 'behavior' or 'technical'")
 
-    asyncio.run(main(config.room_url, config.token, config.mode))
+    asyncio.run(main(config.room_url, config.token))

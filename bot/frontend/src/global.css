@@ -4,11 +4,11 @@
 
 :root {
   --default-font-size: theme(fontSize.sm);
-  --app-padding: 0px;
+  --app-padding: 12px;
   --layout-aside-width: 100%;
 
   @screen md {
-    --app-padding: 0;
+    --app-padding: 1rem;
     --default-font-size: theme(fontSize.base);
     --layout-aside-width: 320px;
   }

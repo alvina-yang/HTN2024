@@ -5,7 +5,7 @@ from dataclasses import asdict
 from typing import Optional
 import logging
 
-from fastapi import FastAPI, Request, HTTPException, Query
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -58,7 +58,6 @@ async def create_room(request: Request) -> JSONResponse:
 class StartAgentItem(BaseModel):
     room_url: str
     token: str
-    mode: str
 
 
 @app.post("/start")
@@ -68,20 +67,13 @@ async def start_agent(item: StartAgentItem) -> JSONResponse:
 
     room_url = item.room_url
     token = item.token
-    mode = item.mode
 
     logging.debug(f"Starting agent for room: {room_url}")
     logging.debug(f"Token: {token}")
 
-    # Detect what mode it is: behavior or technical
-    # They are indicated in the request variable, mode=behavior or mode=technical
-    # If it is behavior, we will use the behavior model
-
-
-
     # Spawn a new agent machine, and join the user session
     try:
-        vm_id = running_bot_locally(room_url, token, mode)
+        vm_id = running_bot_locally(room_url, token)
         bot_machines[vm_id] = room_url
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to start machine: {e}")

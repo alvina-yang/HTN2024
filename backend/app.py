@@ -122,9 +122,9 @@ def analyze_pdf(file_stream):
         # Extract text from the PDF pages
         text = ''
         for page in pdf.pages:
-            text += page.extract_text() + '\n'
+            text += page.extract_text() + ' '  # Replace '\n' with space
         # Perform any further analysis or parsing
-        analysis_result["text"] = text.strip()
+        analysis_result["text"] = text.strip().replace('\n', ' ')  # Replace any remaining newlines with spaces
     return analysis_result
 
 # API endpoint to upload and analyze the PDF

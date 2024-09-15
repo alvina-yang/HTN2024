@@ -61,15 +61,14 @@ def spawn_fly_machine(room_url: str, token: str):
     raise Exception(f"Bot failed to enter started state after {MAX_RETRIES} retries")
 
 
-def running_bot_locally(room_url: str, token: str, mode: str):
+def running_bot_locally(room_url: str, token: str):
     # Use the same image as the bot runner
 
     logging.debug(f"Starting agent for room: {room_url}")
     logging.debug(f"Token: {token}")
-    logging.debug(f"Mode: {mode}")
 
     # Machine configuration
-    cmd = f"python src/bot.py --room_url {room_url} --token {token} --mode {mode}"
+    cmd = f"python src/bot.py --room_url {room_url} --token {token}"
     cmd = cmd.split()
 
     # Run the bot locally
