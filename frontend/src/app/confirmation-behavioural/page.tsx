@@ -32,16 +32,13 @@ export default function ConfirmationPage() {
     console.log("submitted");
   };
 
-  const prompt = 'Hello, please enter how you would like to customize this bot.';
+  const prompt = 'Upload your resume to get personalized experience.';
   return (
     <div className="h-screen flex items-center justify-center bg-black text-white">
       <div className="flex flex-col text-white items-center gap-5">
         <TextGenerateEffect words={prompt}/>
-        <PlaceholdersAndVanishInput
-        placeholders={placeholders}
-        onChange={handleChange}
-        onSubmit={onSubmit}
-      />
+
+
         <FileUpload onChange={handleFileUpload} />
         <button
           className="px-4 py-2 bg-zinc-900 rounded hover:bg-zinc-700 transition"
