@@ -1,3 +1,4 @@
+from io import BytesIO
 from flask import Flask, request, jsonify
 import os
 from dotenv import load_dotenv
@@ -7,6 +8,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain.agents import AgentExecutor
 import json
 import re
+import pdfplumber
 
 # Load environment variables
 load_dotenv()
@@ -32,6 +34,18 @@ agent = create_cohere_react_agent(llm, tools, prompt_template)
 
 # Create an agent executor by passing in the agent and tools
 agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+
+def parse_leetcode_problem_to_chroma(problem_description):
+    """
+    Parse a LeetCode problem description into a Chroma prompt.
+    """
+    return f"""
+    Given the following problem statement:
+
+    {problem_description}
+
+    Write a function that solves the problem. Your function should take the necessary input parameters and return the expected output.
+    """
 
 # Function to review code
 def review_leetcode_solution(problem_description, code):
@@ -88,6 +102,46 @@ def evaluate_code():
         return jsonify(feedback)
     else:
         return jsonify({"error": "Feedback not generated properly"}), 500
+
+# Utility function to check if file extension is allowed
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'pdf'
+
+# Function to analyze the PDF (extract text)
+def analyze_pdf(file_stream):
+    analysis_result = {}
+    with pdfplumber.open(file_stream) as pdf:
+        # Extract text from the PDF pages
+        text = ''
+        for page in pdf.pages:
+            text += page.extract_text() + '\n'
+        # Perform any further analysis or parsing
+        analysis_result["text"] = text.strip()
+    return analysis_result
+
+# API endpoint to upload and analyze the PDF
+@app.route('/api/upload_pdf', methods=['POST'])
+def upload_pdf():
+    # Check if the post request has the file part
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part in the request"}), 400
+
+    file = request.files['file']
+
+    # If no file is selected
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    # Check if the file has an allowed extension
+    if file and allowed_file(file.filename):
+        # Analyze the PDF file directly from memory without saving it
+        file_stream = BytesIO(file.read())
+        analysis = analyze_pdf(file_stream)
+
+        # Return the analysis result
+        return jsonify(analysis), 200
+    else:
+        return jsonify({"error": "File type not allowed. Only PDF files are allowed."}), 400
 
 # Run the Flask app
 if __name__ == '__main__':
