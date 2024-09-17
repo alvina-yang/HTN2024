@@ -100,6 +100,15 @@ export const Session = React.memo(
       []
     );
 
+    const handleEnd = () => {
+      const currentUrl = window.location.href;
+      if (currentUrl.includes("behavior")) {
+        window.location.href = "http://localhost:3000/statistics";
+      } else {
+        window.location.href = "http://localhost:3000/statistics-code";
+      }
+    };
+
     // Modal effect
     // Note: backdrop doesn't currently work with dialog open, so we use setModal instead
     useEffect(() => {
@@ -112,6 +121,7 @@ export const Session = React.memo(
       }
       return () => current?.close();
     }, [showDevices]);
+
 
     useAppMessage({
       onAppMessage: (e) => {
@@ -213,7 +223,7 @@ export const Session = React.memo(
                 </Button>
               </TooltipTrigger>
             </Tooltip>
-            <Button onClick={() => onLeave()} className="ml-auto">
+            <Button onClick={handleEnd} className="ml-auto">
               <LogOut size={16} />
               End
             </Button>

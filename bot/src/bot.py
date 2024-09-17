@@ -50,6 +50,7 @@ else:
     logging.basicConfig(level=logging.INFO)
 
 
+
 async def main(room_url, token=None, mode="behavior", analysis=None):
     async with aiohttp.ClientSession() as session:
 
@@ -96,6 +97,15 @@ async def main(room_url, token=None, mode="behavior", analysis=None):
         # If the mode is technical, we use the technical base prompt
         if mode == "technical":
             message_history = [LLM_TECHNICAL_BASE_PROMPT]
+            # Calling the api https://f025-2620-101-f000-7c0-00-4a68.ngrok-free.app/api/get_lc_question to get the technical question
+            async with session.get("https://f025-2620-101-f000-7c0-00-4a68.ngrok-free.app/api/get_lc_question") as response:
+                response = await response.json()
+                
+                QUESTION_DATA = {
+                    "role": "system",
+                    "content" : response["content"]["text"]
+                }
+                message_history.append(QUESTION_DATA)
         else:
             message_history = [LLM_BEHAVIORAL_BASE_PROMPT]
             # Behavior mode -> we will be attaching user's resume analysis to the base prompt

@@ -17,7 +17,7 @@ export default function ConfirmationPage() {
     // Store confirmation in localStorage
     localStorage.setItem("codeInterviewConfirmed", "true");
     // Navigate to the code interview page
-    window.location.href = "http://localhost:5173/?mode=technical";
+    window.location.href = "http://localhost:3000/code-interview";
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

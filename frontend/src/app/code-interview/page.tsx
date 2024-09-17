@@ -25,13 +25,13 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "&.Mui-selected": {
-            backgroundColor: "#3f3f46", // Zinc-600 for selected option
+            backgroundColor: "#3f3f46",
           },
           "&.Mui-selected:hover": {
-            backgroundColor: "#3f3f46", // Darker Zinc-600 on hover
+            backgroundColor: "#3f3f46",
           },
           "&:hover": {
-            backgroundColor: "#3f3f46", // Zinc-600 on hover
+            backgroundColor: "#3f3f46",
           },
         },
       },
@@ -40,15 +40,14 @@ const theme = createTheme({
 });
 
 export default function CodeEditorPage() {
-  const [code, setCode] = useState(""); // Store the user's code
-  const [language, setLanguage] = useState("javascript"); // Default language
+  const [code, setCode] = useState("");
+  const [language, setLanguage] = useState("javascript");
   const router = useRouter();
 
-  const [question, setQuestion] = useState<any>(null); // Store the fetched question
-  const [loading, setLoading] = useState<boolean>(true); // Loading state
-  const [error, setError] = useState<string | null>(null); // Error state
+  const [question, setQuestion] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Fetch the question from the backend
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
@@ -59,7 +58,7 @@ export default function CodeEditorPage() {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ query: "dynamic programming" }), // Replace this with the actual query from the user input if needed
+            body: JSON.stringify({ query: "dynamic programming" }),
           }
         );
 
@@ -68,8 +67,8 @@ export default function CodeEditorPage() {
         }
 
         const data = await response.json();
-        setQuestion(data.content); // Set the fetched question content
-        setLoading(false); // Set loading to false after fetching
+        setQuestion(data.content);
+        setLoading(false);
       } catch (err) {
         setLoading(false);
         setError("Failed to fetch the question.");
@@ -79,30 +78,27 @@ export default function CodeEditorPage() {
     fetchQuestion();
   }, []);
 
-  // Check if the confirmation has been done
   useEffect(() => {
     if (localStorage.getItem("codeInterviewConfirmed") !== "true") {
       router.push("/code-interview/confirmation");
     }
   }, [router]);
 
-  const [isSaving, setIsSaving] = useState(false); // To simulate API call status
+  const [isSaving, setIsSaving] = useState(false);
   const [changesEnabled, setChangesEnabled] = useState(true);
 
-  // Function to handle the "Ask for Review" button
   const handleAskForReview = async () => {
     setChangesEnabled(false);
     console.log("Changes disabled, code review requested.");
 
     try {
-      // Send code to backend here
       const reviewResponse = await fetch("https://f025-2620-101-f000-7c0-00-4a68.ngrok-free.app/api/review_code", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          code: code, // The code written in the editor
+          code: code,
         }),
       });
 
@@ -115,7 +111,6 @@ export default function CodeEditorPage() {
       console.error("Error submitting the review:", error);
     }
 
-    // Navigate to the statistics page after the review is submitted
     router.push("/statistics-code");
   };
 
@@ -124,12 +119,12 @@ export default function CodeEditorPage() {
     setIsSaving(true);
     setTimeout(() => {
       setIsSaving(false);
-    }, 500); // Simulating a delay
+    }, 500);
   };
 
   const handleEditorChange = (value: string | undefined) => {
     const newCode = value || "";
-    setCode(newCode); // Update code in state
+    setCode(newCode);
     if (changesEnabled) {
       sendCodeToBackend(newCode);
     }
@@ -141,7 +136,7 @@ export default function CodeEditorPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="h-screen w-full flex">
+      <div className="h-screen w-full flex relative">
         <SidebarDemo />
         <div className="w-1/2 h-full flex flex-col">
           <div className="flex justify-between p-3 bg-zinc-800 text-white">
@@ -170,8 +165,8 @@ export default function CodeEditorPage() {
                   MenuProps={{
                     PaperProps: {
                       sx: {
-                        bgcolor: "#292524", // Zinc-800 background
-                        color: "white", // White text
+                        bgcolor: "#292524",
+                        color: "white",
                       },
                     },
                   }}
@@ -190,7 +185,7 @@ export default function CodeEditorPage() {
             <Button
               borderRadius="1.85rem"
               className="bg-zinc-700 dark:bg-slate-900 text-slate-200 dark:text-white dark:border-slate-800"
-              onClick={handleAskForReview} // Call the review function on click
+              onClick={handleAskForReview}
             >
               Ask for Review
             </Button>
@@ -227,6 +222,17 @@ export default function CodeEditorPage() {
               </pre>
             </>
           )}
+        </div>
+
+        {/* New iframe added to the bottom right corner */}
+        <div className="absolute bottom-4 right-4 w-[400px] h-[300px] z-10">   <iframe
+            src="http://localhost:5173/?mode=technical"
+            width="100%"
+            height="100%"
+            frameBorder="0"
+            title="Technical Mode"
+            allow="microphone; camera" 
+          ></iframe>
         </div>
       </div>
     </ThemeProvider>

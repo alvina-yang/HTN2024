@@ -43,16 +43,17 @@ const StickyScrollRevealDemo = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://f025-2620-101-f000-7c0-00-4a68.ngrok-free.app/api/review_code",
+          "https://f025-2620-101-f000-7c0-00-4a68.ngrok-free.app/api/evaluate_behavior",
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ query: "Provide code review feedback" }), // Replace with appropriate query if necessary
+            body: JSON.stringify({ 
+              output: "aaa" // Include the output field as specified
+            }),
           }
         );
-
         if (!response.ok) {
           throw new Error("Failed to fetch review data.");
         }
